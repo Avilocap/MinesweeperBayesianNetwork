@@ -1,8 +1,4 @@
-"""Class that defines the board for Mine Sweeper game.
 
-Author: Yuhuang Hu
-Email : duguyue100@gmail.com
-"""
 
 from __future__ import print_function
 import numpy as np
@@ -120,5 +116,3 @@ class MSBoard(object):
         """
         return MSBoard(board_width, board_height, num_mines)
 
-borad = MSBoard(10,10,5)
-borad.print_board()
