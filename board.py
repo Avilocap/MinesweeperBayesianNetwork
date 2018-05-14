@@ -119,3 +119,6 @@ class MSBoard(object):
         board : MSBoard
         """
         return MSBoard(board_width, board_height, num_mines)
+
+borad = MSBoard(10,10,5)
+borad.print_board()
