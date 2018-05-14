@@ -99,4 +99,8 @@ ENV/
 
 # mypy
 .mypy_cache/
+<<<<<<< HEAD
 .vscode/launch.json
+=======
+.vscode/settings.json
+>>>>>>> 7b3fb08e8bba5e494ea5dad06d9bc1be00dfdeb3
