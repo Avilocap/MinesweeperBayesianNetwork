@@ -13,6 +13,7 @@ class MSBoard(object):
        # board_width : int  --> [Ancho del tablero(> 0)]
        # board_height : int  --> [Altura del tablero (> 0)]
        # num_mines : int  --> [número de minas, no puede ser mayor que (board_width x board_height)]
+      
         if (board_width <= 0):
             raise ValueError("El tablero no puede ser negativo")
         else:
@@ -35,10 +36,10 @@ class MSBoard(object):
         #  mine_map : numpy.ndarray [el map que define las minas: 0 is empty, 1 is mine]
         #  info_map : numpy.ndarray [mapa que se le presenta al jugador:
         #               0-8 número de minas alrededor,
-        #               9 celda marcada con bandera,
-        #               10 celda marcada con interrogación,
-        #               11 celda sin descibrir,
-        #               12 mina.
+        #               F celda marcada con bandera,
+        #               ? celda marcada con interrogación,
+        #               O celda sin descibrir,
+        #               X mina.
         self.mine_map = np.zeros((self.board_height, self.board_width),
                                  dtype=np.uint8)
         idx_list = np.random.permutation(self.board_width*self.board_height)
@@ -68,13 +69,13 @@ class MSBoard(object):
         for i in range(self.board_height):
             temp_line = str(i)+"\t\t"
             for j in range(self.board_width):
-                if self.info_map[i, j] == 9:
+                if self.info_map[i, j] == 'F':
                     temp_line += "@\t"
-                elif self.info_map[i, j] == 10:
+                elif self.info_map[i, j] == '?':
                     temp_line += "?\t"
-                elif self.info_map[i, j] == 11:
+                elif self.info_map[i, j] == 'O':
                     temp_line += "*\t"
-                elif self.info_map[i, j] == 12:
+                elif self.info_map[i, j] == 'X':
                     temp_line += "!\t"
                 else:
                     temp_line += str(self.info_map[i, j])+"\t"
