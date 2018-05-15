@@ -55,7 +55,7 @@ class MinesweeperBoard(object):
             self.mine_map[idx_y, idx_x] = 1
 
         self.info_map = np.ones((self.board_height, self.board_width),
-                                dtype=np.uint8)*11
+                                dtype=np.uint8)*99
 
     
 
