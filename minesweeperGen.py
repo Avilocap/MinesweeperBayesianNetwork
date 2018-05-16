@@ -92,4 +92,3 @@ class MinesweeperBoard(object):
        # board_height : int  --> [Altura del tablero (> 0)]
        # num_mines : int  --> [número de minas, no puede ser mayor que (board_width x board_height)]
         return MinesweeperBoard(board_width, board_height, num_mines)
-
