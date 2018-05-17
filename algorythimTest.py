@@ -5,19 +5,20 @@ import pgmpy.factors.discrete as pgmf  # Tablas de probabilidades condicionales 
 import pgmpy.inference as pgm
 from msgame import MSGame
 
-Modelo_msgame = pgmm.BayesianModel()
-game = MSGame(5, 5, 5)
+game = MSGame(10, 10, 5)
 
+graph = []
+nodes = game.name_nodes()
+width = game.board.board_width
+height = game.board.board_height
 
-
-""" Modelo_msgame.add_nodes_from(game.get_board.nodes)
-
-Modelo_alarma.add_edges_from([('Robo', 'Alarma'),
-                              ('Terremoto', 'Alarma'),
-                              ('Alarma', 'Llamada'),
-                              ('Terremoto', 'Noticia')])
-Modelo_alarma = pgmm.BayesianModel([('Robo', 'Alarma'),
-                                    ('Terremoto', 'Alarma'),
-                                    ('Alarma', 'Llamada'),
-                                    ('Terremoto', 'Noticia')])
-print(Modelo_alarma.nodes()) """
+for i in range(width):
+    for j in range(height):
+       vecinos = game.neightbours_of_position(i,j)
+       for x in range(0,len(vecinos)):
+           graph.append(("Y" + str(i) + str(j),vecinos[x]))
+    
+Modelo_msgame = pgmm.BayesianModel(graph)
+print(Modelo_msgame.nodes())
+print("EDGEEEEEESSS")
+print(Modelo_msgame.edges())
