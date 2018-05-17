@@ -273,14 +273,10 @@ class MSGame(object):
 
     def neightbours_of_position(self,i,j):
         neightbours_of_position = []
-        k = i
-        l = j
         g = (j+1) + ((i+1) - 1) * self.board.board_width -1
         x = self.name_nodes()
-        
         esEsquinaYCual = self.es_esquina(i,j)
         esLateralYCual = self.es_lateral(i,j)
-        curr_pos =  x[g]
         # neightbours_of_position.append("Posición actual: "+ curr_pos + " " + str(g))
         # print(" ")
         # print(esEsquinaYCual)
