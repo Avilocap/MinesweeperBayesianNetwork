@@ -7,6 +7,8 @@ Email : duguyue100@gmail.com
 from __future__ import print_function
 import socket
 from msboard import MSBoard
+import numpy as np
+
 
 
 class MSGame(object):
@@ -192,6 +194,166 @@ class MSGame(object):
     def get_info_map(self):
         """Get info map."""
         return self.board.info_map
+
+    def get_nodes(self):
+        """Get info map."""
+        return self.board.list_nodes
+    
+    def name_nodes(self):
+        """ Recorre la matriz de información del juego y les da nombre
+        a los elementos respecto de su posicíon (i,j) en la matriz.
+        La posición de (0,0) correspondería con X00 hasta (m,n) dónde nombraría Xmn """
+        nodes_names = []
+        for i in range(self.board.board_width):
+            for j in range(self.board.board_height):
+                nodes_names.append("X" + str(i) + str(j))
+        return nodes_names
+    
+    def es_esquina(self,i,j):
+        """ Numeración de las esquinas 
+            No es esquina = 0
+            Esquina Arriba izquierda = 1
+            Esquina arriba derecha = 2
+            Esquina abajo derecha = 3
+            Esquina abajo izquierda = 4
+        
+        """
+        width1 = self.board_width
+        height1 = self.board_height
+        esEsquina = False
+        if ((i is 0) and (j is 0)):
+            esEsquina = True
+            num_esquina = 1
+        elif ((i is width1-1) and (j is 0)):
+            esEsquina = True
+            num_esquina = 2
+        elif (i is width1-1) and (j is height1-1):
+            esEsquina = True
+            num_esquina = 3
+        elif ((i is 0) and (j is height1-1)):
+            esEsquina = True
+            num_esquina = 4
+        else:
+            esEsquina = False
+            num_esquina = 0
+
+        return esEsquina, num_esquina
+    
+    def es_lateral(self,i,j):
+        """ Numeración de los laterales 
+            No es lateral = 0
+            Lateral izquierdo = 1
+            Lateral derecho = 2
+            Techo = 3
+            Suelo = 4
+        
+        """
+        esLateral = False
+        width1 = self.board_width
+        height1 = self.board_height
+
+        if i is 0:
+            lateral = 1
+            esLateral = True
+        elif i is width1-1:
+            lateral = 2
+            esLateral = True
+        elif j is 0:
+            lateral = 3
+            esLateral = True
+        elif j is height1-1:
+            lateral = 4
+            esLateral = True
+        else:
+            esLateral = False
+            lateral = 0
+
+        return esLateral,lateral
+
+
+    def neightbours_of_position(self,i,j):
+        neightbours_of_position = []
+        k = i
+        l = j
+        g = (j+1) + ((i+1) - 1) * self.board.board_width -1
+        x = self.name_nodes()
+        
+        esEsquinaYCual = self.es_esquina(i,j)
+        esLateralYCual = self.es_lateral(i,j)
+        curr_pos =  x[g]
+        neightbours_of_position.append("Posición actual: "+ curr_pos + " " + str(g))
+        print(" ")
+        print(esEsquinaYCual)
+        print(esLateralYCual)
+
+        if not esEsquinaYCual[0] and not esLateralYCual[0]:
+            neight_hori_izq = x[g-1] 
+            neight_hori_dch = x[g+1] 
+            width3 = self.board_width
+            neight_ver_arr = x[g-width3]
+            neight_ver_abj = x[g+width3]
+            neight_diag_iz_arri = x[g-width3-1]
+            neight_diag_iz_abaj = x[g+width3-1]
+            neight_diag_dcha_arri = x[g-width3+1]
+            neight_diag_dcha_abaj = x[g+width3+1]
+
+            neightbours_of_position.append("Vecis--> " + neight_hori_dch+", "+neight_hori_izq+", "+neight_ver_abj+", "+neight_ver_arr+", "+neight_diag_iz_arri+", "+neight_diag_iz_abaj+", "+neight_diag_dcha_abaj+", "+neight_diag_dcha_arri)
+            
+        elif esEsquinaYCual[0]:
+            width1 = self.board_width
+            if esEsquinaYCual[1] is 1:
+                neight_hori_dch = x[g+1]
+                neight_ver_abj = x[g+width1]
+                neight_diag_dcha_abaj = x[g+width1+1]
+                neightbours_of_position.append("Vecis--> " + neight_hori_dch+", "+neight_ver_abj+", "+neight_diag_dcha_abaj)
+            elif esEsquinaYCual[1] is 2:
+                neight_hori_izq = x[g-width1]
+                neight_ver_abj = x[g+1]
+                neight_diag_iz_abaj = x[g-width1+1]
+                neightbours_of_position.append("Vecis--> " + neight_hori_izq+", "+neight_ver_abj+", "+neight_diag_iz_abaj)
+            elif esEsquinaYCual[1] is 3:
+                neight_ver_arr = x[g-width1]
+                neight_hori_dch = x[g-1]
+                neight_diag_iz_arri = x[g-width1-1]
+                neightbours_of_position.append("Vecis--> " + neight_ver_arr+", "+neight_hori_dch+", "+neight_diag_iz_arri)
+            else:
+                neight_ver_arr = x[g+width1]
+                neight_hori_izq = x[g-1]
+                neight_diag_dcha_arri = x[g+width1-1]
+                neightbours_of_position.append("Vecis--> " + neight_ver_arr+", "+neight_hori_izq+", "+neight_diag_dcha_arri)
+        else:
+            width2 = self.board_width
+            if esLateralYCual[1] is 1:
+                neight_ver_arr = x[g-1]
+                neight_ver_abj = x[g+1]
+                neight_hori_dch = x[g+width2]
+                neight_diag_dcha_arri = x[g+width2-1]
+                neight_diag_dcha_abaj = x[g+width2+1]
+                neightbours_of_position.append("Vecis--> " + neight_ver_arr+", "+neight_ver_abj+", "+neight_hori_dch+", "+neight_diag_dcha_arri+", "+neight_diag_dcha_abaj)
+            elif esLateralYCual[1] is 2:
+                neight_ver_arr = x[g-width2]
+                neight_ver_abj = x[g+1]
+                neight_hori_izq = x[g-1]
+                neight_diag_iz_arri = x[g-width2-1]
+                neight_diag_iz_abaj = x[g-width2+1]
+                neightbours_of_position.append("Vecis--> " + neight_ver_arr+", "+neight_ver_abj+", "+neight_hori_izq+", "+neight_diag_iz_arri+", "+neight_diag_iz_abaj)
+            elif esLateralYCual[1] is 3:
+                neight_hori_izq = x[g-width2]
+                neight_hori_dch = x[g+1]
+                neight_ver_abj = x[g+width2]
+                neight_diag_iz_abaj = x[g-width2+1]
+                neight_diag_dcha_abaj = x[g+width2+1]
+                neightbours_of_position.append("Vecis--> " + neight_hori_izq+", "+neight_hori_dch+", "+neight_ver_abj+", "+neight_diag_iz_abaj+", "+neight_diag_dcha_abaj)
+            else:
+                neight_hori_izq = x[g-1]
+                neight_hori_dch = x[g+width2]
+                neight_ver_arr = x[g-width2]
+                neight_diag_iz_arri = x[g-width2-1]
+                neight_diag_dcha_arri = x[g+width2-1]
+                neightbours_of_position.append("Vecis--> " + neight_hori_izq+", "+neight_hori_dch+", "+neight_ver_arr+", "+neight_diag_iz_arri+", "+neight_diag_dcha_arri)
+
+
+        return neightbours_of_position
 
     def get_mine_map(self):
         """Get mine map."""

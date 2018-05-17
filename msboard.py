@@ -72,6 +72,9 @@ class MSBoard(object):
 
         self.info_map = np.ones((self.board_height, self.board_width),
                                 dtype=np.uint8)*11
+        self.list_nodes = list(np.array(self.info_map))
+
+        
 
     def click_field(self, move_x, move_y):
         """Click one grid by given position."""
@@ -181,3 +184,8 @@ class MSBoard(object):
             board_str += temp_line.expandtabs(4)+"\n"
 
         return board_str
+
+    # def get_nodes(self):
+    #     list_nodes = list(np.array(self.info_map))
+
+    #     return list_nodes
