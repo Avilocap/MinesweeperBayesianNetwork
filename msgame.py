@@ -293,7 +293,14 @@ class MSGame(object):
             neight_diag_dcha_arri = x[g-width3+1]
             neight_diag_dcha_abaj = x[g+width3+1]
 
-            neightbours_of_position.append(neight_hori_dch+", "+neight_hori_izq+", "+neight_ver_abj+", "+neight_ver_arr+", "+neight_diag_iz_arri+", "+neight_diag_iz_abaj+", "+neight_diag_dcha_abaj+", "+neight_diag_dcha_arri)
+            neightbours_of_position.append(neight_hori_dch)
+            neightbours_of_position.append(neight_hori_izq)
+            neightbours_of_position.append(neight_ver_abj)
+            neightbours_of_position.append(neight_ver_arr)
+            neightbours_of_position.append(neight_diag_iz_arri)
+            neightbours_of_position.append(neight_diag_iz_abaj)
+            neightbours_of_position.append(neight_diag_dcha_abaj)
+            neightbours_of_position.append(neight_diag_dcha_arri)
             
         elif esEsquinaYCual[0]:
             width1 = self.board_width

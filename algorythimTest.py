@@ -5,7 +5,7 @@ import pgmpy.factors.discrete as pgmf  # Tablas de probabilidades condicionales 
 import pgmpy.inference as pgm
 from msgame import MSGame
 
-game = MSGame(10, 10, 5)
+game = MSGame(20, 20, 40)
 
 graph = []
 nodes = game.name_nodes()
