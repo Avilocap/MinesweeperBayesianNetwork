@@ -465,3 +465,5 @@ class MSGame(object):
                    "(5) Print board: print\n"
 
         self.tcp_send(help_msg)
+
+    
