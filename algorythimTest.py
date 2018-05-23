@@ -12,8 +12,10 @@ game = MSGame(4, 4, 5)
 graph = []
 width = game.board.board_width
 height = game.board.board_height
-
-print("Se crea el tablero con tamaño" + str(width) + "X" +str(height))
+numb = game.board.num_mines
+print("\n")
+print("Se crea el tablero con tamaño " + str(width) + " x " +str(height) + ", con " + str(numb) + " bombas")
+print("\n")
 
 #Averiguamos los vecinos de cada Y y creamos un conjunto con todos los nodos y las aristas relacionadas.
 for i in range(width):
@@ -25,15 +27,18 @@ for i in range(width):
 #Añadimos a la modelo bayesiano la información obtenida anteriormente
 Modelo_msgame = pgmm.BayesianModel(graph)
 print("Creamos la red bayesiana que quedaria de esta forma")
-print("Nodos")
+print("\n")
+print("NODOS ------------------------------")
 print(Modelo_msgame.nodes())
-print("Aristas")
+print("\n")
+print("ARISTAS -------------------------------")
 print(Modelo_msgame.edges())
 
 probabilidadBomba = game.board.num_mines/(game.board.board_height*game.board_width)
 probabilidadNoBomba = 1 - probabilidadBomba
-print("Se calcula la probabilidad inicial de que haya bomba en el tablero: num_minas/width*height= "+str(probabilidadBomba))
-
+print("\n")
+print("Se calcula la probabilidad inicial de que haya bomba en el tablero: num_minas/(width*height) = "+str(probabilidadBomba))
+print("\n")
 modelnodes = Modelo_msgame.nodes()
 modelnodesY = Modelo_msgame.nodes()
 res  = [s for s in modelnodes if 'X' in s] 
@@ -59,6 +64,7 @@ for e in range(0,len(res)):
 # res3 = list(product(listaNo,repeat = 3))
 # res4 = (1-(x[0]*x[1]*x[2]) for x in res1)
 # print(list(res4))
+print("\n")
 print("Sacamos ahora los vecinos de cada Yij y calculamos sus CPDS")
 resY  = [s for s in modelnodesY if 'Y' in s] 
 for l in range(0,len(resY)):
@@ -78,6 +84,7 @@ for l in range(0,len(resY)):
     cpd_letrasY =  "cpd_letras"+(resY[l])
     cpd_letrasY = pgmf.TabularCPD(resY[l],2,totallist,vecinos,[2]*len(vecinos))
     Modelo_msgame.add_cpds(cpd_letrasY)
+    # print(cpd_letrasY)
 
     # for x in range(0,len(vecinos)): 
     #     lista = [probabilidadNoBomba,probabilidadBomba]
@@ -86,9 +93,16 @@ for l in range(0,len(resY)):
     #     print(cpd_msgameY)
     # 
 Modelo_msgame.check_model()
+print("\n")
 print("Tras chekear el modelo creado con el método chek_model(), obtenemos como ejemplo obtenemos la CPD de una esquina para su comprobación")
+print("\n")
+print(" -- CPD Y00 --")
 print(Modelo_msgame.get_cpds('Y00'))
+# print("\n")
+# print(" -- CPD Y02 --")
+# print(Modelo_msgame.get_cpds('Y02'))
  
+
 
 
 
