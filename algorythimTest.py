@@ -6,37 +6,45 @@ import pgmpy.inference as pgmi
 from msgame import MSGame
 from itertools import count, islice, product, repeat, combinations, permutations, combinations_with_replacement
 
-game = MSGame(4, 4, 5)
 
+#Definimos el tablero
+game = MSGame(4, 4, 5)
 graph = []
-nodes = game.name_nodes()
 width = game.board.board_width
 height = game.board.board_height
 
+print("Se crea el tablero con tamaño" + str(width) + "X" +str(height))
+
+#Averiguamos los vecinos de cada Y y creamos un conjunto con todos los nodos y las aristas relacionadas.
 for i in range(width):
     for j in range(height):
        vecinos = game.neightbours_of_position(i,j)
        for x in range(0,len(vecinos)):
            graph.append((vecinos[x],"Y" + str(i) + str(j)))
     
+#Añadimos a la modelo bayesiano la información obtenida anteriormente
 Modelo_msgame = pgmm.BayesianModel(graph)
-# print(graph)
-# print(Modelo_msgame.nodes())
-# print("EDGEEEEEESSS")
-# print(Modelo_msgame.edges())
+print("Creamos la red bayesiana que quedaria de esta forma")
+print("Nodos")
+print(Modelo_msgame.nodes())
+print("Aristas")
+print(Modelo_msgame.edges())
 
 probabilidadBomba = game.board.num_mines/(game.board.board_height*game.board_width)
 probabilidadNoBomba = 1 - probabilidadBomba
+print("Se calcula la probabilidad inicial de que haya bomba en el tablero: num_minas/width*height= "+str(probabilidadBomba))
 
 modelnodes = Modelo_msgame.nodes()
 modelnodesY = Modelo_msgame.nodes()
 res  = [s for s in modelnodes if 'X' in s] 
 
+print("A partir de aqui se obtienen las CPDS de las Xij")
 for e in range(0,len(res)):
     cpd_msgameX =  "cpd_msgame"+(res[e])
     cpd_msgameX = pgmf.TabularCPD(res[e],2,[[probabilidadNoBomba,probabilidadBomba]])
     Modelo_msgame.add_cpds(cpd_msgameX)
-    # print(cpd_msgameX)
+    print(cpd_msgameX)
+
 
 
 
@@ -51,8 +59,7 @@ for e in range(0,len(res)):
 # res3 = list(product(listaNo,repeat = 3))
 # res4 = (1-(x[0]*x[1]*x[2]) for x in res1)
 # print(list(res4))
-
-
+print("Sacamos ahora los vecinos de cada Yij y calculamos sus CPDS")
 resY  = [s for s in modelnodesY if 'Y' in s] 
 for l in range(0,len(resY)):
     i = resY[l][1:2]
@@ -79,13 +86,16 @@ for l in range(0,len(resY)):
     #     print(cpd_msgameY)
     # 
 Modelo_msgame.check_model()
+print("Tras chekear el modelo creado con el método chek_model(), obtenemos como ejemplo obtenemos la CPD de una esquina para su comprobación")
+print(Modelo_msgame.get_cpds('Y00'))
+ 
 
 
 
-Modelo_msgame_ev = pgmi.VariableElimination(Modelo_msgame)
-cosulta = Modelo_msgame_ev.query(["Y11"])
+# Modelo_msgame_ev = pgmi.VariableElimination(Modelo_msgame)
+# cosulta = Modelo_msgame_ev.query(["Y11"])
 
-print(cosulta)
+# print(cosulta)
 
 
 # noditos = list(Modelo_msgame.nodes())
