@@ -5,16 +5,21 @@ import pgmpy.factors.discrete as pgmf  # Tablas de probabilidades condicionales 
 import pgmpy.inference as pgmi
 from msgame import MSGame
 from itertools import count, islice, product, repeat, combinations, permutations, combinations_with_replacement
+import math
+import sys
 
 
 #Definimos el tablero
-game = MSGame(4, 4, 5)
+game = MSGame(5, 5, 5)
 graph = []
 width = game.board.board_width
 height = game.board.board_height
 numb = game.board.num_mines
+orig_stdout0 = sys.stdout
+f0 = open('0. nodos&aristas.txt', 'w')
+sys.stdout = f0
 print("\n")
-print("Se crea el tablero con tamaño " + str(width) + " x " +str(height) + ", con " + str(numb) + " bombas")
+print("Se crea el tablero con tamaño " + str(width) + " x " +str(height) + ", con " + str(numb) + " minas")
 print("\n")
 
 #Averiguamos los vecinos de cada Y y creamos un conjunto con todos los nodos y las aristas relacionadas.
@@ -41,29 +46,21 @@ print("Se calcula la probabilidad inicial de que haya bomba en el tablero: num_m
 print("\n")
 modelnodes = Modelo_msgame.nodes()
 modelnodesY = Modelo_msgame.nodes()
+
+sys.stdout = orig_stdout0
+f0.close()
+
 res  = [s for s in modelnodes if 'X' in s] 
 
-print("A partir de aqui se obtienen las CPDS de las Xij")
+#"A partir de aqui se obtienen las CPDS de las Xij"
 for e in range(0,len(res)):
     cpd_msgameX =  "cpd_msgame"+(res[e])
     cpd_msgameX = pgmf.TabularCPD(res[e],2,[[probabilidadNoBomba,probabilidadBomba]])
     Modelo_msgame.add_cpds(cpd_msgameX)
-    print(cpd_msgameX)
 
-
-
-
-# lista = [probabilidadNoBomba,probabilidadBomba]
-# listaNo =[1- probabilidadNoBomba, 1 - probabilidadBomba] 
-# res1 = list(product(lista,repeat = 3))
-# res2 = (x[0]*x[1]*x[2] for x in res1)
-# print(list(res2))
-# #list res2, valores para Y(si)
-# #list res 4, valores para Y(no)
-
-# res3 = list(product(listaNo,repeat = 3))
-# res4 = (1-(x[0]*x[1]*x[2]) for x in res1)
-# print(list(res4))
+orig_stdout2 = sys.stdout
+f2 = open('1. CPDS.txt', 'w')
+sys.stdout = f2
 print("\n")
 print("Sacamos ahora los vecinos de cada Yij y calculamos sus CPDS")
 resY  = [s for s in modelnodesY if 'Y' in s] 
@@ -73,31 +70,53 @@ for l in range(0,len(resY)):
     # print(i,j)
     vecinos = game.neightbours_of_position(int(i),int(j))
     # print(vecinos)
-    lista = [probabilidadNoBomba,probabilidadBomba]
-    listaNo =[1- probabilidadNoBomba, 1 - probabilidadBomba]
-    res1 = list(product(lista,repeat = len(vecinos)))
-    res2 = (x[0]*x[1]*x[2] for x in res1)
-    res3 = list(product(listaNo,repeat = len(vecinos)))
-    res4 = (1-(x[0]*x[1]*x[2]) for x in res1)
-    totallist = [list(res2),list(res4)]
-    # print(totallist)
+    listOpt = [0,1]
+    resA = list(product(listOpt,repeat = len(vecinos)))
+    probNo = []
+    probSi = []
+    print(resA)
+    a = int(0)
+    b = int(0)
+    suma = int(0)
+    
+    for a in range(0,len(resA)):
+        tup = [(resA[a])]
+        for num in tup:
+            suma = math.fsum(num)
+        probNo.append(suma/len(resA))
+        print(tup)
+        
+    print(probNo)
+    for b in range(0,len(probNo)):
+        prob = 1-probNo[b]
+        probSi.append(prob)
+    print(probSi) 
+    todos = [probNo,probSi]
     cpd_letrasY =  "cpd_letras"+(resY[l])
-    cpd_letrasY = pgmf.TabularCPD(resY[l],2,totallist,vecinos,[2]*len(vecinos))
+    cpd_letrasY = pgmf.TabularCPD(resY[l],2,todos,vecinos,[2]*len(vecinos))
     Modelo_msgame.add_cpds(cpd_letrasY)
-    # print(cpd_letrasY)
+    print(cpd_letrasY)
 
-    # for x in range(0,len(vecinos)): 
-    #     lista = [probabilidadNoBomba,probabilidadBomba]
-    #     cpd_msgameY = "cpd_msgame"+(resY[x])
-    #     cpd_msgameY = pgmf.TabularCPD(resY[x],2*len(vecinos),res2,res4)
-    #     print(cpd_msgameY)
-    # 
+sys.stdout = orig_stdout2
+f2.close()
 Modelo_msgame.check_model()
+orig_stdout3 = sys.stdout
+f3 = open('2. testCPDS.txt', 'w')
+sys.stdout = f3
+# print("\n")
+# print("Tras chekear el modelo creado con el método chek_model(), obtenemos como ejemplo obtenemos la CPD de una esquina para su comprobación")
 print("\n")
-print("Tras chekear el modelo creado con el método chek_model(), obtenemos como ejemplo obtenemos la CPD de una esquina para su comprobación")
+print(" -- CPD Y44 --")
+print(Modelo_msgame.get_cpds('Y44'))
 print("\n")
 print(" -- CPD Y00 --")
 print(Modelo_msgame.get_cpds('Y00'))
+print("\n")
+print(" -- CPD Y23 --")
+print(Modelo_msgame.get_cpds('Y23'))
+
+sys.stdout = orig_stdout3
+f3.close()
 # print("\n")
 # print(" -- CPD Y02 --")
 # print(Modelo_msgame.get_cpds('Y02'))
@@ -110,31 +129,27 @@ print(Modelo_msgame.get_cpds('Y00'))
 # cosulta = Modelo_msgame_ev.query(["Y11"])
 
 # print(cosulta)
-
-
-# noditos = list(Modelo_msgame.nodes())
-# for p in range(len(noditos)):
-#     phiY =  "phi"+(noditos[p])
-#     cpd = Modelo_msgame.get_cpds(noditos[p])
-#     phiY =  cpd.to_factor()
-#     print(phiY)    
-
-
+orig_stdout = sys.stdout
+f = open('3. testOuts.txt', 'w')
+sys.stdout = f
+noditos = list(Modelo_msgame.nodes())
+for p in range(len(noditos)):
+    phiY =  "phi"+(noditos[p])
+    cpd = Modelo_msgame.get_cpds(noditos[p])
+    phiY =  cpd.to_factor()
+    print(phiY)    
 # phi_Y00 = Modelo_msgame.get_cpds('Y00')
 # print(phi_Y00.scope())  
 # print(phi_Y00)
 
-
-
-# print(res)
-# print(probabilidadBomba)
-# print(probabilidadNoBomba)
-
-# print(Modelo_msgame.active_trail_nodes('Y00'))
-# print(Modelo_msgame.is_active_trail('Y00','X10'))
-# print(Modelo_msgame.is_active_trail('Y00','X22'))
-# print(Modelo_msgame.is_active_trail('X10','X11'))
-# print(Modelo_msgame.is_active_trail('X10','Y00'))
+print(Modelo_msgame.active_trail_nodes('Y00'))
+print(Modelo_msgame.is_active_trail('Y00','X10'))
+print(Modelo_msgame.is_active_trail('Y00','X22'))
+print(Modelo_msgame.is_active_trail('X10','X11'))
+print(Modelo_msgame.is_active_trail('X10','Y00'))
 
 # Modelo_msgame_ev = pgmi.VariableElimination(Modelo_msgame)
 # consulta = Modelo_msgame_ev.query(['X00'])
+
+sys.stdout = orig_stdout
+f.close()
