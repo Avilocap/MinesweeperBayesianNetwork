@@ -91,7 +91,7 @@ for l in range(0,len(resY)):
         prob = 1-probNo[b]
         probSi.append(prob)
     print(probSi) 
-    todos = [probNo,probSi]
+    todos = [probSi,probNo]
     cpd_letrasY =  "cpd_letras"+(resY[l])
     cpd_letrasY = pgmf.TabularCPD(resY[l],2,todos,vecinos,[2]*len(vecinos))
     Modelo_msgame.add_cpds(cpd_letrasY)
@@ -176,5 +176,5 @@ f.close()
 
 Modelo_msgame_ev = pgmi.VariableElimination(Modelo_msgame)
 #  {'X11', 'Y10', 'Y22', 'Y02', 'Y01', 'Y20', 'Y12', 'Y00', 'Y21'}}
-cosulta = Modelo_msgame_ev.query(["X11"],{'X00':0,'X10':0,'X01':0,'X22':1,'X32':1,'X23':0})
-print(cosulta)
+# cosulta = Modelo_msgame_ev.query(['X00'],{'Y10':0,'Y11':1,'Y01':0})
+# print(cosulta['X00'])
