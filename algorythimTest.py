@@ -83,7 +83,7 @@ for l in range(0,len(resY)):
         tup = [(resA[a])]
         for num in tup:
             suma = math.fsum(num)
-        probNo.append(suma/len(resA))
+        probNo.append(suma/len(vecinos))
         print(tup)
         
     print(probNo)
@@ -125,8 +125,6 @@ f3.close()
 
 
 
-# Modelo_msgame_ev = pgmi.VariableElimination(Modelo_msgame)
-# cosulta = Modelo_msgame_ev.query(["Y11"])
 
 # print(cosulta)
 orig_stdout = sys.stdout
@@ -141,15 +139,42 @@ for p in range(len(noditos)):
 # phi_Y00 = Modelo_msgame.get_cpds('Y00')
 # print(phi_Y00.scope())  
 # print(phi_Y00)
-
+print(" -- Active trail nodes: all the nodes reachable from that respective variable as values.--")
 print(Modelo_msgame.active_trail_nodes('Y00'))
+print(" -- Active trail nodes  Y00 --")
+print(Modelo_msgame.active_trail_nodes('Y01'))
+print(" -- Active trail nodes  Y01 --")
+print(Modelo_msgame.active_trail_nodes('Y13'))
+print(" -- Active trail nodes  Y13 --")
+print(Modelo_msgame.active_trail_nodes('Y23'))
+print(" -- Active trail nodes  Y23 --")
+print(Modelo_msgame.active_trail_nodes('Y23'))
+print(" -- Active trail nodes  Y11--")
+print(Modelo_msgame.active_trail_nodes('X11'))
+print(" -- Active is trail Y00-X10 --")
 print(Modelo_msgame.is_active_trail('Y00','X10'))
+print(" -- Active is trail Y00-Y10 --")
+print(Modelo_msgame.is_active_trail('Y00','Y10'))
+print(" -- Active is trail Y00-Y01 --")
+print(Modelo_msgame.is_active_trail('Y00','Y01'))
+print(" -- Active is trail Y00-X22 --")
 print(Modelo_msgame.is_active_trail('Y00','X22'))
+print(" -- Active is trail X10-X11 --")
 print(Modelo_msgame.is_active_trail('X10','X11'))
+print(" -- Active is trail X10-Y00 --")
 print(Modelo_msgame.is_active_trail('X10','Y00'))
 
-# Modelo_msgame_ev = pgmi.VariableElimination(Modelo_msgame)
+# Modelo_msgame_ev = pgmi.VariableElimination(Modelo_msgame)'
 # consulta = Modelo_msgame_ev.query(['X00'])
 
 sys.stdout = orig_stdout
 f.close()
+
+# print(phiY.reduce([('X33',1),('X34',0)]))
+# print(phiY.scope())
+# print(phiY)
+
+Modelo_msgame_ev = pgmi.VariableElimination(Modelo_msgame)
+#  {'X11', 'Y10', 'Y22', 'Y02', 'Y01', 'Y20', 'Y12', 'Y00', 'Y21'}}
+cosulta = Modelo_msgame_ev.query(["X11"],{'X00':0,'X10':0,'X01':0,'X22':1,'X32':1,'X23':0})
+print(cosulta)
