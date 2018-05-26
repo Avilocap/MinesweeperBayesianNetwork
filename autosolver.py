@@ -38,39 +38,41 @@ for i in range(board.board_width):
             evidencias["Y" + str(i) + str(j)] = 0
         elif field_status == 11:
             sindescubrir.append("X" + str(i) + str(j))
-
-
 print(evidencias)
-
-orig_stdout0 = sys.stdout
-f0 = open('nextStepOracleOut.txt', 'w')
-sys.stdout = f0
 
 Model_Game_ev = pgmi.VariableElimination(modelo)
 consulta = Model_Game_ev.query(sindescubrir, evidencias)
 
 listaDeProbsFinales = []
 for x in range(len(sindescubrir)):
-    print(consulta[sindescubrir[x]])
+    # print(consulta[sindescubrir[x]])
     # print(consulta[sindescubrir[x]].values)
     listaDeProbsFinales.append(consulta[sindescubrir[x]].values)
 listasCeros = [item[0] for item in listaDeProbsFinales]
 maximo = max(listasCeros)
-print(listasCeros.index(max(listasCeros)))
-f0.close()
-sys.stdout = orig_stdout0
+# print(listasCeros.index(max(listasCeros)))
 winner = sindescubrir[listasCeros.index(max(listasCeros))]
-print("Casilla sugerida: " + winner)
+print("Click en " + winner)
 
+if game.game_status == 0:
+    print("YOU LOOSE!")
+elif game.game_status == 1:
+    print("YOU WON!")
 
-
-# while game.game_status == 2:
-#     # play move
+while game.game_status == 2:
+    # play move
     
     
-#     move = input("Move: ")
-#     game.play_move_msg(move)
-#     game.print_board()
-#     board = game.board
-#     print(board.info_map)
-#     print(board.mine_map)
+    # move = input("Move: ")
+    i = winner[1:2]
+    j = winner[2:3]
+    print("Click on: "+str(i)+","+str(j))
+    game.play_move("click",i,j)
+    game.print_board()
+    board = game.board
+    print(board.info_map)
+    # print(board.mine_map)
+    if game.game_status == 0:
+        print("YOU LOOSE!")
+    elif game.game_status == 1:
+        print("YOU WON!")
