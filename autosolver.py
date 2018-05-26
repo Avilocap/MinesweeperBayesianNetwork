@@ -5,7 +5,7 @@ from random import randint
 import pgmpy.inference as pgmi
 import sys
 
-game = MSGame(10, 10, 9)
+game = MSGame(10, 10, 8)
 modelo = gameNetworkGenerator(game)
 
 
@@ -45,12 +45,9 @@ consulta = Model_Game_ev.query(sindescubrir, evidencias)
 
 listaDeProbsFinales = []
 for x in range(len(sindescubrir)):
-    # print(consulta[sindescubrir[x]])
-    # print(consulta[sindescubrir[x]].values)
     listaDeProbsFinales.append(consulta[sindescubrir[x]].values)
 listasCeros = [item[0] for item in listaDeProbsFinales]
 maximo = max(listasCeros)
-# print(listasCeros.index(max(listasCeros)))
 winner = sindescubrir[listasCeros.index(max(listasCeros))]
 print("Click en " + winner)
 
@@ -58,21 +55,19 @@ if game.game_status == 0:
     print("YOU LOOSE!")
 elif game.game_status == 1:
     print("YOU WON!")
-
-while game.game_status == 2:
-    # play move
-    
-    
-    # move = input("Move: ")
+elif game.game_status == 2:
     i = winner[1:2]
     j = winner[2:3]
     print("Click on: "+str(i)+","+str(j))
-    game.play_move("click",i,j)
+    game.play_move("click",i.values,j.values)
     game.print_board()
     board = game.board
     print(board.info_map)
-    # print(board.mine_map)
-    if game.game_status == 0:
-        print("YOU LOOSE!")
-    elif game.game_status == 1:
-        print("YOU WON!")
+
+# while game.game_status == 2:
+#    
+#     # print(board.mine_map)
+#     if game.game_status == 0:
+#         print("YOU LOOSE!")
+#     elif game.game_status == 1:
+#         print("YOU WON!")
