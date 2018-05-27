@@ -10,7 +10,8 @@ import pgmpy.inference.EliminationOrder as elor
 game = MSGame(10, 10, 7)
 modelo = gameNetworkGenerator(game)
 
-
+print("")
+print("Tablero")
 game.print_board()
 posX = randint(0,game.board_width-1)
 posY = randint(0,game.board_width-1)
@@ -20,6 +21,7 @@ except NameError:
     pass
 game.play_move("click",posX,posY)
 print("Move: " + str(posX)+","+str(posY))
+print("")
 board = game.board
 print(board.info_map)
 print("")
