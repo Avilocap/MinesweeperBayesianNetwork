@@ -11,7 +11,7 @@ game = MSGame(10, 10, 2)
 modelo = gameNetworkGenerator(game)
 
 print("")
-print("Tablero ----------------------")
+print("△ Tablero ------------------------------------------------------")
 print("")
 game.print_board()
 posX = randint(0,game.board_width-1)
@@ -21,7 +21,7 @@ try:
 except NameError:
     pass
 game.play_move("click",posX,posY)
-print("Move: click: " + str(posX)+","+str(posY)+"  ---------------------------------------")
+print("△ Move --> click: " + str(posX)+","+str(posY)+"  ---------------------------------------")
 print("")
 game.print_board()
 board = game.board
@@ -49,7 +49,7 @@ while game.game_status == 2:
                 listaEvidencias.append("Y" + str(i) + str(j))
                 sindescubrir.append("X" + str(i) + str(j))
     print("")
-    print("Evidencias descubiertas tras el click  --------------------------------------")
+    print("△ Evidencias descubiertas tras el click  -----------------------------")
     print("")
     print(evidencias)
     print("")
@@ -76,7 +76,8 @@ while game.game_status == 2:
             game.play_move("flag",int(ke),int(le))
     
     if game.game_status == 1:
-        print("SE HAN MARCADO TODAS LAS MINAS Y NO HAN EXPLOTADO")
+        print("")
+        print("¡¡ SE HAN MARCADO TODAS LAS MINAS Y NO HAN EXPLOTADO !!")
         print("")
         game.print_board()
     else:
