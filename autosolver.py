@@ -23,8 +23,9 @@ except NameError:
 game.play_move("click",posX,posY)
 print("Move: click: " + str(posX)+","+str(posY)+"  ---------------------------------------")
 print("")
+game.print_board()
 board = game.board
-print(board.info_map)
+# print(board.info_map)
 # print("")
 # print(board.mine_map)
 print("")
