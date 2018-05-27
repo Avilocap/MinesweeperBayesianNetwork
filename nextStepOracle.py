@@ -4,6 +4,10 @@ from BayesianNetworkGenerator import gameNetworkGenerator
 from random import randint
 import pgmpy.inference as pgmi
 import sys
+import pgmpy.inference.EliminationOrder as elor
+
+
+
 
 game = MSGame(10, 10, 9)
 modelo = gameNetworkGenerator(game)
@@ -27,6 +31,7 @@ no_bombas_enYij={}
 no_bombas_enXij={} 
 evidencias= {}
 sindescubrir = []
+listaEvidencias = []
 for i in range(board.board_width):
     for j in range(board.board_height):
         field_status = board.info_map[j, i]
@@ -37,18 +42,16 @@ for i in range(board.board_width):
             evidencias["X" + str(i) + str(j)] = 0
             evidencias["Y" + str(i) + str(j)] = 0
         elif field_status == 11:
+            listaEvidencias.append("Y" + str(i) + str(j))
             sindescubrir.append("X" + str(i) + str(j))
-
-
 print(evidencias)
-
 orig_stdout0 = sys.stdout
 f0 = open('nextStepOracleOut.txt', 'w')
 sys.stdout = f0
 
 Model_Game_ev = pgmi.VariableElimination(modelo)
-consulta = Model_Game_ev.query(sindescubrir, evidencias)
-
+Model_el = elor.BaseEliminationOrder(modelo)
+consulta = Model_Game_ev.query(sindescubrir, evidencias,Model_el.get_elimination_order(listaEvidencias))
 listaDeProbsFinales = []
 for x in range(len(sindescubrir)):
     print(consulta[sindescubrir[x]])

@@ -7,7 +7,7 @@ import sys
 import pgmpy.inference.EliminationOrder as elor
 
 
-game = MSGame(10, 10, 5)
+game = MSGame(10, 10, 15)
 modelo = gameNetworkGenerator(game)
 
 
@@ -46,10 +46,6 @@ while game.game_status == 2:
                 listaEvidencias.append("Y" + str(i) + str(j))
                 sindescubrir.append("X" + str(i) + str(j))
     print(evidencias)
-    # mm = modelo.to_markov_model()
-    # markov = []
-    # node = "X" + str(posX)+ str(posY)
-    # markov.append(mm.markov_blanket(node))
     
     Model_Game_ev = pgmi.VariableElimination(modelo)
     Model_el = elor.BaseEliminationOrder(modelo)
