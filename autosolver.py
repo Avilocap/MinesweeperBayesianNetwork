@@ -11,7 +11,8 @@ game = MSGame(8, 8, 2)
 modelo = gameNetworkGenerator(game)
 
 print("")
-print("Tablero")
+print("Tablero ----------------------")
+print("")
 game.print_board()
 posX = randint(0,game.board_width-1)
 posY = randint(0,game.board_width-1)
@@ -20,11 +21,11 @@ try:
 except NameError:
     pass
 game.play_move("click",posX,posY)
-print("Move: " + str(posX)+","+str(posY))
+print("Move: " + str(posX)+","+str(posY)+"---------------------------------------")
 print("")
 board = game.board
 print(board.info_map)
-print("")
+# print("")
 # print(board.mine_map)
 print("")
 
