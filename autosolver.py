@@ -25,7 +25,7 @@ print("")
 board = game.board
 print(board.info_map)
 print("")
-print(board.mine_map)
+# print(board.mine_map)
 print("")
 
 while game.game_status == 2:
