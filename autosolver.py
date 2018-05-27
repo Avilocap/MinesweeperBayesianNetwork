@@ -4,6 +4,7 @@ from BayesianNetworkGenerator import gameNetworkGenerator
 from random import randint
 import pgmpy.inference as pgmi
 import sys
+import pgmpy.inference.EliminationOrder as elor
 
 
 game = MSGame(10, 10, 5)
@@ -31,6 +32,7 @@ while game.game_status == 2:
     evidencias= {}
     sindescubrir = []
     con_bombas = []
+    listaEvidencias = []
     for i in range(board.board_width):
         for j in range(board.board_height):
             field_status = board.info_map[j, i]
@@ -41,10 +43,17 @@ while game.game_status == 2:
                 evidencias["X" + str(i) + str(j)] = 0
                 evidencias["Y" + str(i) + str(j)] = 0
             elif field_status == 11:
+                listaEvidencias.append("Y" + str(i) + str(j))
                 sindescubrir.append("X" + str(i) + str(j))
     print(evidencias)
+    # mm = modelo.to_markov_model()
+    # markov = []
+    # node = "X" + str(posX)+ str(posY)
+    # markov.append(mm.markov_blanket(node))
+    
     Model_Game_ev = pgmi.VariableElimination(modelo)
-    consulta = Model_Game_ev.query(sindescubrir, evidencias)
+    Model_el = elor.BaseEliminationOrder(modelo)
+    consulta = Model_Game_ev.query(sindescubrir, evidencias,Model_el.get_elimination_order(listaEvidencias))
     listaDeProbsFinales = []
     for x in range(len(sindescubrir)):
         listaDeProbsFinales.append(consulta[sindescubrir[x]].values)
@@ -64,6 +73,8 @@ while game.game_status == 2:
         game.print_board()
     else:
         print(elementos)
+        print(sindescubrir)
+        print(listaDeProbsFinales)
         maximo = max(listasCeros)
         winner = sindescubrir[listasCeros.index(max(listasCeros))]
         print("Se ha descubierto que la casilla " + winner + " es la que menos posibilidades tiene de contener una mina, en concreto: " + str(maximo))
