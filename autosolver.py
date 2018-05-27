@@ -21,7 +21,7 @@ try:
 except NameError:
     pass
 game.play_move("click",posX,posY)
-print("Move: " + str(posX)+","+str(posY)+"---------------------------------------")
+print("Move: click: " + str(posX)+","+str(posY)+"  ---------------------------------------")
 print("")
 board = game.board
 print(board.info_map)
@@ -50,6 +50,7 @@ while game.game_status == 2:
                 sindescubrir.append("X" + str(i) + str(j))
     print("")
     print("Evidencias descubiertas tras el click  --------------------------------------")
+    print("")
     print(evidencias)
     
     Model_Game_ev = pgmi.VariableElimination(modelo)
