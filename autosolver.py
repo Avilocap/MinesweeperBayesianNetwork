@@ -7,7 +7,7 @@ import sys
 import pgmpy.inference.EliminationOrder as elor
 
 
-game = MSGame(8, 8, 2)
+game = MSGame(18, 10, 2)
 modelo = gameNetworkGenerator(game)
 
 print("")
@@ -52,6 +52,7 @@ while game.game_status == 2:
     print("Evidencias descubiertas tras el click  --------------------------------------")
     print("")
     print(evidencias)
+    print("")
     
     Model_Game_ev = pgmi.VariableElimination(modelo)
     Model_el = elor.BaseEliminationOrder(modelo)
@@ -76,6 +77,7 @@ while game.game_status == 2:
     
     if game.game_status == 1:
         print("SE HAN MARCADO TODAS LAS MINAS Y NO HAN EXPLOTADO")
+        print("")
         game.print_board()
     else:
         # print(elementos)
