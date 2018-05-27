@@ -43,7 +43,7 @@ while game.game_status == 2:
             elif field_status == 11:
                 listaEvidencias.append("Y" + str(i) + str(j))
                 sindescubrir.append("X" + str(i) + str(j))
-    print(evidencias)
+    # print(evidencias)
     
     Model_Game_ev = pgmi.VariableElimination(modelo)
     Model_el = elor.BaseEliminationOrder(modelo)
@@ -70,9 +70,9 @@ while game.game_status == 2:
         print("SE HAN MARCADO TODAS LAS MINAS Y NO HAN EXPLOTADO")
         game.print_board()
     else:
-        print(elementos)
-        print(sindescubrir)
-        print(listaDeProbsFinales)
+        # print(elementos)
+        # print(sindescubrir)
+        # print(listaDeProbsFinales)
         maximo = max(listasCeros)
         winner = sindescubrir[listasCeros.index(max(listasCeros))]
         print("Se ha descubierto que la casilla " + winner + " es la que menos posibilidades tiene de contener una mina, en concreto: " + str(maximo))
@@ -84,4 +84,5 @@ while game.game_status == 2:
         game.play_move("click",int(k),int(l))
         game.print_board()
         board = game.board
+        print("----------------------------------------------------------------------------------------------------------------------")
         # print(board.info_map)

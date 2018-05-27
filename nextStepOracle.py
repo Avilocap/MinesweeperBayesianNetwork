@@ -44,7 +44,7 @@ for i in range(board.board_width):
         elif field_status == 11:
             listaEvidencias.append("Y" + str(i) + str(j))
             sindescubrir.append("X" + str(i) + str(j))
-print(evidencias)
+# print(evidencias)
 orig_stdout0 = sys.stdout
 f0 = open('nextStepOracleOut.txt', 'w')
 sys.stdout = f0
