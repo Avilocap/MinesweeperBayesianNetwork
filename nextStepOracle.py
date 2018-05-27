@@ -51,7 +51,8 @@ sys.stdout = f0
 
 Model_Game_ev = pgmi.VariableElimination(modelo)
 Model_el = elor.BaseEliminationOrder(modelo)
-consulta = Model_Game_ev.query(sindescubrir, evidencias,Model_el.get_elimination_order(listaEvidencias))
+#consulta = Model_Game_ev.query(sindescubrir, evidencias,Model_el.get_elimination_order(listaEvidencias))
+consulta = Model_Game_ev.query(sindescubrir, evidencias)
 listaDeProbsFinales = []
 for x in range(len(sindescubrir)):
     print(consulta[sindescubrir[x]])
