@@ -43,7 +43,7 @@ while game.game_status == 2:
             elif field_status == 11:
                 listaEvidencias.append("Y" + str(i) + str(j))
                 sindescubrir.append("X" + str(i) + str(j))
-    # print(evidencias)
+    print(evidencias)
     
     Model_Game_ev = pgmi.VariableElimination(modelo)
     Model_el = elor.BaseEliminationOrder(modelo)
