@@ -7,7 +7,7 @@ import sys
 import pgmpy.inference.EliminationOrder as elor
 
 
-game = MSGame(10, 10, 15)
+game = MSGame(5, 5, 9)
 modelo = gameNetworkGenerator(game)
 
 
@@ -57,7 +57,9 @@ while game.game_status == 2:
     con_bombas = [item[1] for item in listaDeProbsFinales]
     elementos = []
     for h in range(len(con_bombas)):
-        if con_bombas[h] == 1.0:
+        #Aquí estamos viendo si un número enorme en coma flotante es idéntico a 1, llega un punto al final del algoritmo, en el que en las últimas iteraciones la probabilidad de bomba para 
+        #para una casilla no se acerca a 1.0 y no podemos marcarla bien con flag para ganar el juego.
+        if con_bombas[h].isclose(h, 1.0, rel_tol=1e-09, abs_tol=0.0):
             elemento = sindescubrir[h]
             # elementos.append(sindescubrir[h])
             ke = elemento[1:2]
