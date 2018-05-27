@@ -77,7 +77,7 @@ while game.game_status == 2:
         winner = sindescubrir[listasCeros.index(max(listasCeros))]
         print("Se ha descubierto que la casilla " + winner + " es la que menos posibilidades tiene de contener una mina, en concreto: " + str(maximo))
         print("Click en " + winner + "?. Pulsa enter para continuar")
-        input()  
+        # input()  
         k = winner[1:2]
         l = winner[2:3]
         print("Click on: "+str(k)+","+str(l))
