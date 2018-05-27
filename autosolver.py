@@ -7,7 +7,7 @@ import sys
 import pgmpy.inference.EliminationOrder as elor
 
 
-game = MSGame(8, 8, 13)
+game = MSGame(8, 8, 2)
 modelo = gameNetworkGenerator(game)
 
 print("")
