@@ -5,7 +5,7 @@ from random import randint
 import pgmpy.inference as pgmi
 import sys
 import pgmpy.inference.EliminationOrder as elor
-game = MSGame(10, 10, 5)
+game = MSGame(10, 10, 10)
 modelo = gameNetworkGenerator(game)
 
 print("")
