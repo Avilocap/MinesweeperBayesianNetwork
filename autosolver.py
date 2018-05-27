@@ -52,7 +52,7 @@ while game.game_status == 2:
     print(evidencias)
     print("")
     print("-------  △  --  CALCULANDO SIGUIENTE MOVIMIENTO --  △   ---------------------------------")
-    print("------------------    Por favor, espera    ------------------------------------------")
+    print("---------------------    Por favor, espera    ------------------------------------------")
     print("")
     Model_Game_ev = pgmi.VariableElimination(modelo)
     Model_el = elor.BaseEliminationOrder(modelo)
