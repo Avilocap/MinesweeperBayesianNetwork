@@ -7,7 +7,7 @@ import sys
 import pgmpy.inference.EliminationOrder as elor
 
 
-game = MSGame(5, 5, 6)
+game = MSGame(5, 5, 7)
 modelo = gameNetworkGenerator(game)
 
 
@@ -47,8 +47,8 @@ while game.game_status == 2:
     
     Model_Game_ev = pgmi.VariableElimination(modelo)
     Model_el = elor.BaseEliminationOrder(modelo)
-    consulta = Model_Game_ev.query(sindescubrir, evidencias,Model_el.get_elimination_order(listaEvidencias))
-    #consulta = Model_Game_ev.query(sindescubrir, evidencias)
+    # consulta = Model_Game_ev.query(sindescubrir, evidencias,Model_el.get_elimination_order(listaEvidencias))
+    consulta = Model_Game_ev.query(sindescubrir, evidencias)
     listaDeProbsFinales = []
     for x in range(len(sindescubrir)):
         listaDeProbsFinales.append(consulta[sindescubrir[x]].values)
