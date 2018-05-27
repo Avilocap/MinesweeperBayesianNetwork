@@ -1,12 +1,15 @@
 from __future__ import print_function
 from msgame import MSGame
 from BayesianNetworkGenerator import gameNetworkGenerator
+from msboard import bcolors
 from random import randint
 import pgmpy.inference as pgmi
 import sys
 import pgmpy.inference.EliminationOrder as elor
-game = MSGame(10, 10, 8)
+game = MSGame(5, 5, 8)
 modelo = gameNetworkGenerator(game)
+
+
 
 print("")
 print("△ Tablero ------------------------------------------------------")
@@ -53,8 +56,8 @@ while game.game_status == 2:
     print("")
     print(evidencias)
     print("")
-    print("-------  △  --  CALCULANDO SIGUIENTE MOVIMIENTO --  △   ---------------------------------")
-    print("---------------------    Por favor, espera    ------------------------------------------")
+    print("-------  △  -- "+bcolors.OKBLUE+" CALCULANDO SIGUIENTE MOVIMIENTO"+bcolors.ENDC+"--  △   ---------------------------------")
+    print("---------------------  "+bcolors.OKBLUE+"  Por favor, espera "+bcolors.ENDC+"   ------------------------------------------")
     print("")
     Model_Game_ev = pgmi.VariableElimination(modelo)
     Model_el = elor.BaseEliminationOrder(modelo)
@@ -79,7 +82,7 @@ while game.game_status == 2:
     
     if game.game_status == 1:
         print("")
-        print("¡¡ SE HAN MARCADO TODAS LAS MINAS Y NO HAN EXPLOTADO !!")
+        print(bcolors.OKGREEN + "¡¡ SE HAN MARCADO TODAS LAS MINAS Y NO HAN EXPLOTADO !!" + bcolors.ENDC)
         print("")
         game.print_board()
     else:
@@ -89,7 +92,7 @@ while game.game_status == 2:
         maximo = max(listasCeros)
         winner = sindescubrir[listasCeros.index(max(listasCeros))]
         print("Se ha descubierto que la casilla " + winner + " es la que menos posibilidades tiene de contener una mina, en concreto: " + str(maximo))
-        print("Click en " + winner + "?. Pulsa enter para continuar")
+        print("Click en " + winner + " ?. Pulsa enter para continuar")
         # input()  
         k = winner[1:2]
         l = winner[2:3]
