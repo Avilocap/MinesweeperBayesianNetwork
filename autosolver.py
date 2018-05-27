@@ -7,7 +7,7 @@ import sys
 import pgmpy.inference.EliminationOrder as elor
 
 
-game = MSGame(5, 5, 7)
+game = MSGame(10, 10, 7)
 modelo = gameNetworkGenerator(game)
 
 
@@ -22,7 +22,9 @@ game.play_move("click",posX,posY)
 print("Move: " + str(posX)+","+str(posY))
 board = game.board
 print(board.info_map)
+print("")
 print(board.mine_map)
+print("")
 
 while game.game_status == 2:
     no_bombas_enYij={} 
@@ -43,12 +45,14 @@ while game.game_status == 2:
             elif field_status == 11:
                 listaEvidencias.append("Y" + str(i) + str(j))
                 sindescubrir.append("X" + str(i) + str(j))
+    print("")
+    print("Evidencias descubiertas tras el click  --------------------------------------")
     print(evidencias)
     
     Model_Game_ev = pgmi.VariableElimination(modelo)
     Model_el = elor.BaseEliminationOrder(modelo)
-    # consulta = Model_Game_ev.query(sindescubrir, evidencias,Model_el.get_elimination_order(listaEvidencias))
-    consulta = Model_Game_ev.query(sindescubrir, evidencias)
+    consulta = Model_Game_ev.query(sindescubrir, evidencias,Model_el.get_elimination_order(listaEvidencias))
+    #consulta = Model_Game_ev.query(sindescubrir, evidencias)
     listaDeProbsFinales = []
     for x in range(len(sindescubrir)):
         listaDeProbsFinales.append(consulta[sindescubrir[x]].values)
