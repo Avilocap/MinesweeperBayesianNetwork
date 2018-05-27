@@ -49,6 +49,8 @@ while game.game_status == 2:
     print("")
     print("△ Evidencias descubiertas tras el click  -----------------------------")
     print("")
+    print(" ◻︎ Número de evicencias : %d" % len (evidencias))
+    print("")
     print(evidencias)
     print("")
     print("-------  △  --  CALCULANDO SIGUIENTE MOVIMIENTO --  △   ---------------------------------")

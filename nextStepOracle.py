@@ -52,6 +52,8 @@ for i in range(board.board_width):
 print("")
 print("△ Evidencias descubiertas tras el click  -----------------------------")
 print("")
+print(" ◻︎ Número de evicencias : %d" % len (evidencias))
+print("")
 print(evidencias)
 print("")
 print("-------  △  --  CALCULANDO SIGUIENTE MOVIMIENTO --  △   ---------------------------------")
