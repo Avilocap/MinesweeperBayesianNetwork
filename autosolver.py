@@ -80,11 +80,11 @@ elif game.game_status == 2:
         listaDeProbsFinales.append(consulta[sindescubrir[x]].values)
     listasCeros = [item[0] for item in listaDeProbsFinales]
     maximo = max(listasCeros)
-    winner = sindescubrir[listasCeros.index(max(listasCeros))]
-    i = winner[1:2]
-    j = winner[2:3]
-    print("Click on: "+str(i)+","+str(j))
-    game.play_move("click",int(i),int(j))
+    winner2 = sindescubrir[listasCeros.index(max(listasCeros))]
+    k = winner2[1:2]
+    l = winner2[2:3]
+    print("Click on: "+str(k)+","+str(l))
+    game.play_move("click",int(k),int(l))
     game.print_board()
     board = game.board
     print(board.info_map)
