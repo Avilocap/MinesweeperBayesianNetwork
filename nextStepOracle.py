@@ -12,7 +12,9 @@ import pgmpy.inference.EliminationOrder as elor
 game = MSGame(5, 5, 6)
 modelo = gameNetworkGenerator(game)
 
-
+print("")
+print("△ Tablero ------------------------------------------------------")
+print("")
 game.print_board()
 posX = randint(0,game.board_width-1)
 posY = randint(0,game.board_width-1)
@@ -22,11 +24,13 @@ except NameError:
     pass
 
 game.play_move("click",posX,posY)
-print("Move: " + str(posX)+","+str(posY))
+print("△ Move --> click: " + str(posX)+","+str(posY)+"  ---------------------------------------")
+print("")
 board = game.board
-print(board.info_map)
+# print(board.info_map)
+print("△ CHEAT: Mapa de minas ------------------------------------------------------")
 print(board.mine_map)
-
+print("")
 no_bombas_enYij={} 
 no_bombas_enXij={} 
 evidencias= {}
@@ -44,7 +48,14 @@ for i in range(board.board_width):
         elif field_status == 11:
             listaEvidencias.append("Y" + str(i) + str(j))
             sindescubrir.append("X" + str(i) + str(j))
+print("")
+print("△ Evidencias descubiertas tras el click  -----------------------------")
+print("")
 print(evidencias)
+print("")
+print("-------  △  --  CALCULANDO SIGUIENTE MOVIMIENTO --  △   ---------------------------------")
+print("------------------    Por favor, espera    ------------------------------------------")
+print("")
 orig_stdout0 = sys.stdout
 f0 = open('nextStepOracleOut.txt', 'w')
 sys.stdout = f0
@@ -64,8 +75,7 @@ print(listasCeros.index(max(listasCeros)))
 f0.close()
 sys.stdout = orig_stdout0
 winner = sindescubrir[listasCeros.index(max(listasCeros))]
-print("Casilla sugerida: " + winner)
-
+print("Casilla sugerida: " + winner+ " es la que menor probabilidad tiene de contener una mina, en concreto: " + str(maximo))
 
 
 # while game.game_status == 2:
