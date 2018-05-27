@@ -39,7 +39,7 @@ for i in range(board.board_width):
         elif field_status == 11:
             sindescubrir.append("X" + str(i) + str(j))
 print(evidencias)
-
+print(board.info_map)
 Model_Game_ev = pgmi.VariableElimination(modelo)
 consulta = Model_Game_ev.query(sindescubrir, evidencias)
 
