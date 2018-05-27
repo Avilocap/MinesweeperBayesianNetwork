@@ -18,8 +18,6 @@ try:
     input = raw_input
 except NameError:
     pass
-
-
 game.play_move("click",posX,posY)
 print("Move: " + str(posX)+","+str(posY))
 board = game.board
@@ -49,17 +47,19 @@ while game.game_status == 2:
     
     Model_Game_ev = pgmi.VariableElimination(modelo)
     Model_el = elor.BaseEliminationOrder(modelo)
-    consulta = Model_Game_ev.query(sindescubrir, evidencias,Model_el.get_elimination_order(listaEvidencias))
+    # consulta = Model_Game_ev.query(sindescubrir, evidencias,Model_el.get_elimination_order(listaEvidencias))
+    consulta = Model_Game_ev.query(sindescubrir, evidencias)
     listaDeProbsFinales = []
     for x in range(len(sindescubrir)):
         listaDeProbsFinales.append(consulta[sindescubrir[x]].values)
     listasCeros = [item[0] for item in listaDeProbsFinales]
     con_bombas = [item[1] for item in listaDeProbsFinales]
     elementos = []
+    
     for h in range(len(con_bombas)):
         #Aquí estamos viendo si un número enorme en coma flotante es idéntico a 1, llega un punto al final del algoritmo, en el que en las últimas iteraciones la probabilidad de bomba para 
         #para una casilla no se acerca a 1.0 y no podemos marcarla bien con flag para ganar el juego.
-        if con_bombas[h].isclose(h, 1.0, rel_tol=1e-09, abs_tol=0.0):
+        if con_bombas[h] >= .80:
             elemento = sindescubrir[h]
             # elementos.append(sindescubrir[h])
             ke = elemento[1:2]
