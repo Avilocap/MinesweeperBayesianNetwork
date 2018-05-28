@@ -56,7 +56,7 @@ while game.game_status == 2:
     print("")
     print(evidencias)
     print("")
-    print("-------  △  -- "+bcolors.OKBLUE+" CALCULANDO SIGUIENTE MOVIMIENTO"+bcolors.ENDC+"--  △   ---------------------------------")
+    print("-------  △  -- "+bcolors.OKBLUE+" CALCULANDO SIGUIENTE MOVIMIENTO"+bcolors.ENDC+"  --  △   ---------------------------------")
     print("---------------------  "+bcolors.OKBLUE+"  Por favor, espera "+bcolors.ENDC+"   ------------------------------------------")
     print("")
     Model_Game_ev = pgmi.VariableElimination(modelo)
