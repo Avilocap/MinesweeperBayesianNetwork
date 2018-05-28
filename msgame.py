@@ -385,9 +385,9 @@ class MSGame(object):
         TODO: some more expections..
         """
         if self.game_status == 0:
-            print("[MESSAGE] YOU LOSE!")
+            print(" [ 💣 💣 💣 💣 💣 💣 ] ¡ HAS PERDIDO ! [ 💣 💣 💣 💣 💣 💣 ]")
         elif self.game_status == 1:
-            print("[MESSAGE] YOU WIN!")
+            print(" 🎉🎉🎉🎉🎉🎉🎉🎉 TODAS LAS BOMBAS MARCADAS, HAS GANADO.  🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉  ¡ ENHORABUENA ! 🎉🎉🎉🎉🎉🎉🎉🎉 ")
 
     def parse_move(self, move_msg):
         """Parse a move from a string.
