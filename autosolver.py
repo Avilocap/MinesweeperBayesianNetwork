@@ -59,9 +59,12 @@ while game.game_status == 2:
     print("-------  △  -- "+bcolors.OKBLUE+" CALCULANDO SIGUIENTE MOVIMIENTO"+bcolors.ENDC+"  --  △   ---------------------------------")
     print("---------------------  "+bcolors.OKBLUE+"  Por favor, espera "+bcolors.ENDC+"   ------------------------------------------")
     print("")
-    Model_Game_ev = pgmi.VariableElimination(modelo)
-    Model_el = elor.BaseEliminationOrder(modelo)
-    consulta = Model_Game_ev.query(sindescubrir, evidencias,Model_el.get_elimination_order(listaEvidencias))
+    Model_Game_bel = pgmi.BeliefPropagation(modelo)
+    Model_Game_bel.calibrate()
+    consulta = Model_Game_bel.query(sindescubrir, evidencias)
+    # Model_Game_ev = pgmi.VariableElimination(modelo)
+    # Model_el = elor.BaseEliminationOrder(modelo)
+    # consulta = Model_Game_ev.query(sindescubrir, evidencias,Model_el.get_elimination_order(listaEvidencias))
     #consulta = Model_Game_ev.query(sindescubrir, evidencias)
     listaDeProbsFinales = []
     for x in range(len(sindescubrir)):
