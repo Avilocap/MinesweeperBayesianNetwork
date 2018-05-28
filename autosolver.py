@@ -82,8 +82,8 @@ while game.game_status == 2:
     
     if game.game_status == 1:
         print("")
-        print(bcolors.OKGREEN + "¡¡ SE HAN MARCADO TODAS LAS MINAS Y NO HAN EXPLOTADO !!" + bcolors.ENDC)
-        print("")
+        # print(bcolors.OKGREEN + "¡¡ SE HAN MARCADO TODAS LAS MINAS Y NO HAN EXPLOTADO !!" + bcolors.ENDC)
+        # print("")
         game.print_board()
     else:
         # print(elementos)
