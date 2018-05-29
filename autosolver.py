@@ -4,6 +4,7 @@ from BayesianNetworkGenerator import gameNetworkGenerator
 from msboard import bcolors
 from random import randint
 import pgmpy.inference as pgmi
+import pgmpy.factors.discrete as pgmf
 import sys
 import pgmpy.inference.EliminationOrder as elor
 game = MSGame(10, 10, 5)
@@ -62,12 +63,27 @@ while game.game_status == 2:
     # Model_Game_bel = pgmi.BeliefPropagation(modelo)
     # Model_Game_bel.calibrate()
     # consulta = Model_Game_bel.query(sindescubrir, evidencias)
-    Model_Game_ev = pgmi.VariableElimination(modelo)
-    Model_el = elor.BaseEliminationOrder(modelo)
-    consulta = Model_Game_ev.query(sindescubrir, evidencias,Model_el.get_elimination_order(listaEvidencias))
-    #consulta = Model_Game_ev.query(sindescubrir, evidencias)
+    # Model_Game_ev = pgmi.VariableElimination(modelo)
+    #Model_el = elor.BaseEliminationOrder(modelo)
+    # consulta = Model_Game_ev.query(sindescubrir, evidencias,Model_el.get_elimination_order(listaEvidencias))
+    # consulta = Model_Game_ev.query(sindescubrir, evidencias)
+    nodos = list(modelo.nodes())
     listaDeProbsFinales = []
+    res = []
     for x in range(len(sindescubrir)):
+        for x in sindescubrir:
+            nombre = sindescubrir.index(x)
+            if nombre is not nodos.index(x):
+                res.append(x)
+               
+        modelo.remove_nodes_from(res)
+        print(modelo.check_model())
+        print(res)
+        Model_Game_ev = pgmi.VariableElimination(modelo)
+        consulta = Model_Game_ev.query(sindescubrir, evidencias)
+
+
+
         listaDeProbsFinales.append(consulta[sindescubrir[x]].values)
     listasCeros = [item[0] for item in listaDeProbsFinales]
     con_bombas = [item[1] for item in listaDeProbsFinales]
