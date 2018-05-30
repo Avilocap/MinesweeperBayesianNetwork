@@ -4,10 +4,10 @@ from BayesianNetworkGenerator import gameNetworkGenerator
 from msboard import bcolors
 from random import randint
 import pgmpy.inference as pgmi
-import pgmpy.factors.discrete as pgmf
+import networkx
 import sys
 import pgmpy.inference.EliminationOrder as elor
-game = MSGame(10, 10, 5)
+game = MSGame(10, 10, 20)
 modelo = gameNetworkGenerator(game)
 
 
@@ -60,30 +60,39 @@ while game.game_status == 2:
     print("-------  △  -- "+bcolors.OKBLUE+" CALCULANDO SIGUIENTE MOVIMIENTO"+bcolors.ENDC+"  --  △   ---------------------------------")
     print("---------------------  "+bcolors.OKBLUE+"  Por favor, espera "+bcolors.ENDC+"   ------------------------------------------")
     print("")
-    # Model_Game_bel = pgmi.BeliefPropagation(modelo)
-    # Model_Game_bel.calibrate()
-    # consulta = Model_Game_bel.query(sindescubrir, evidencias)
-    # Model_Game_ev = pgmi.VariableElimination(modelo)
-    #Model_el = elor.BaseEliminationOrder(modelo)
-    # consulta = Model_Game_ev.query(sindescubrir, evidencias,Model_el.get_elimination_order(listaEvidencias))
-    # consulta = Model_Game_ev.query(sindescubrir, evidencias)
-    nodos = list(modelo.nodes())
+
+
+    print("nodos antes")
+    print(modelo.nodes())
+
+    
+    todas = sindescubrir + list(evidencias.keys())
+    nodosDescartados = []
+    padres = []
+    
+    for x in todas:
+        padres = modelo.subgraph(networkx.ancestors(modelo, x)).nodes() 
+    for y in modelo.nodes():
+        if y not in todas and y not in padres:
+            nodosDescartados.append(y)
+    print("Descartados")
+    print(nodosDescartados)
+    print("Padres")
+    print(padres)
+    print()
+    modelo.remove_nodes_from(nodosDescartados)
+
+    print("nodos despues")
+    print(modelo.nodes())
+
+    Model_Game_ev = pgmi.VariableElimination(modelo)
+    Model_el = elor.BaseEliminationOrder(modelo)
+    consulta = Model_Game_ev.query(sindescubrir, evidencias)
+
+    
+
     listaDeProbsFinales = []
-    res = []
     for x in range(len(sindescubrir)):
-        for x in sindescubrir:
-            nombre = sindescubrir.index(x)
-            if nombre is not nodos.index(x):
-                res.append(x)
-               
-        modelo.remove_nodes_from(res)
-        print(modelo.check_model())
-        print(res)
-        Model_Game_ev = pgmi.VariableElimination(modelo)
-        consulta = Model_Game_ev.query(sindescubrir, evidencias)
-
-
-
         listaDeProbsFinales.append(consulta[sindescubrir[x]].values)
     listasCeros = [item[0] for item in listaDeProbsFinales]
     con_bombas = [item[1] for item in listaDeProbsFinales]
