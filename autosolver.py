@@ -7,7 +7,7 @@ import pgmpy.inference as pgmi
 import networkx
 import sys
 import pgmpy.inference.EliminationOrder as elor
-game = MSGame(10, 10, 8)
+game = MSGame(8, 8, 13)
 modelo = gameNetworkGenerator(game)
 
 
@@ -62,31 +62,31 @@ while game.game_status == 2:
     print("")
 
 
-    print("nodos antes")
-    print(modelo.nodes())
+    # print("nodos antes")
+    # print(modelo.nodes())
 
-    
+    # Se descartan los nodos irrelevantes
     todas = sindescubrir + list(evidencias.keys())
     nodosDescartados = []
     padres = []
-    
+    modeloCopia = modelo.copy()
     for x in todas:
-        padres = modelo.subgraph(networkx.ancestors(modelo, x)).nodes() 
-    for y in modelo.nodes():
+        padres = modeloCopia.subgraph(networkx.ancestors(modeloCopia, x)).nodes() 
+    for y in modeloCopia.nodes():
         if y not in todas and y not in padres:
             nodosDescartados.append(y)
-    print("Descartados")
-    print(nodosDescartados)
-    print("Padres")
-    print(padres)
-    print()
-    modelo.remove_nodes_from(nodosDescartados)
+    
+    modeloCopia.remove_nodes_from(nodosDescartados)
 
-    print("nodos despues")
-    print(modelo.nodes())
+    # print("Descartados")
+    # print(nodosDescartados)
+    # print("Padres")
+    # print(padres)
+    # print()
+    # print("nodos despues")
+    # print(modelo.nodes())
 
-    Model_Game_ev = pgmi.VariableElimination(modelo)
-    Model_el = elor.BaseEliminationOrder(modelo)
+    Model_Game_ev = pgmi.VariableElimination(modeloCopia)
     consulta = Model_Game_ev.query(sindescubrir, evidencias)
 
     
@@ -101,7 +101,7 @@ while game.game_status == 2:
     for h in range(len(con_bombas)):
         #Aquí estamos viendo si un número enorme en coma flotante es idéntico a 1, llega un punto al final del algoritmo, en el que en las últimas iteraciones la probabilidad de bomba para 
         #para una casilla no se acerca a 1.0 y no podemos marcarla bien con flag para ganar el juego.
-        if con_bombas[h] >= .85:
+        if con_bombas[h] >= .98:
             elemento = sindescubrir[h]
             # elementos.append(sindescubrir[h])
             ke = elemento[1:2]
