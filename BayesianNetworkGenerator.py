@@ -23,7 +23,7 @@ def gameNetworkGenerator(game):
     #Añadimos a la modelo bayesiano la información obtenida anteriormente
     Modelo_msgame = pgmm.BayesianModel(graph)
 
-    probabilidadBomba = game.board.num_mines/(game.board.board_height*game.board_width)
+    probabilidadBomba = game.board.num_mines*2/((game.board.board_height)*(game.board_width))
     probabilidadNoBomba = 1 - probabilidadBomba
     modelnodes = Modelo_msgame.nodes()
     modelnodesY = Modelo_msgame.nodes()

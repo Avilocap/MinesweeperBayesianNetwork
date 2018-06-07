@@ -32,8 +32,8 @@ print("△ CHEAT: Mapa de minas ------------------------------------------------
 print("")
 print(board.mine_map)
 print("")
-no_bombas_enYij={} 
-no_bombas_enXij={} 
+# no_bombas_enYij={} 
+# no_bombas_enXij={} 
 evidencias= {}
 sindescubrir = []
 listaEvidencias = []
