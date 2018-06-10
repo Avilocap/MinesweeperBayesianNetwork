@@ -114,13 +114,13 @@ while game.game_status == 2:
             # print("NB")
             # print(noBorrar)
         for y in modeloCopia.nodes():
-            if y not in noBorrar:
+            if y not in noBorrar and y not in evidencias.keys():
                 nodosDescartados.append(y)
-        evidenciasIteracion = {}
-        for h in noBorrar:
-            if h in evidencias.keys():
-                valorEnEvidencias = evidencias.get(h)
-                evidenciasIteracion[h] = valorEnEvidencias
+        # evidenciasIteracion = {}
+        # for h in noBorrar:
+        #     if h in evidencias.keys():
+        #         valorEnEvidencias = evidencias.get(h)
+        #         evidenciasIteracion[h] = valorEnEvidencias
 
         modeloCopia.remove_nodes_from(nodosDescartados)
         """
@@ -128,7 +128,7 @@ while game.game_status == 2:
 
         """
         Model_Game_ev = pgmi.VariableElimination(modeloCopia)
-        consulta = Model_Game_ev.query([casillasParaIterarSet[p]], evidenciasIteracion)
+        consulta = Model_Game_ev.query([casillasParaIterarSet[p]], evidencias)
         print(consulta[casillasParaIterarSet[p]])
         print(consulta[casillasParaIterarSet[p]].values)
         # casillasParaIterarSet.remove(casillasParaIterarSet[p])
