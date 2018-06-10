@@ -7,7 +7,7 @@ import pgmpy.inference as pgmi
 import networkx
 import sys
 import pgmpy.inference.EliminationOrder as elor
-game = MSGame(10, 10, 25)
+game = MSGame(10, 10, 6)
 modelo = gameNetworkGenerator(game)
 
 
@@ -52,6 +52,8 @@ while game.game_status == 2:
             elif field_status == 11:
                 listaEvidencias.append("Y" + str(i) + str(j))
                 sindescubrir.append("X" + str(i) + str(j))
+            elif field_status == 9:
+                evidencias["X" + str(i) + str(j)] = 1
     print("")
     print("△ Evidencias descubiertas tras el click  -----------------------------")
     print("")
