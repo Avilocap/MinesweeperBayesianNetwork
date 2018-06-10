@@ -59,7 +59,7 @@ while game.game_status == 2:
     print("")
     print(" ◻︎ Número de evicencias : %d" % len (evidencias))
     print("")
-    print(evidencias)
+    # print(evidencias)
     print("")
     print("-------  △  -- "+bcolors.OKBLUE+" CALCULANDO SIGUIENTE MOVIMIENTO"+bcolors.ENDC+"  --  △   ---------------------------------")
     print("---------------------  "+bcolors.OKBLUE+"  Por favor, espera "+bcolors.ENDC+"   ------------------------------------------")
@@ -81,20 +81,20 @@ while game.game_status == 2:
                 casillasParaIterar.append(vesii)
     
     casillasParaIterarSet = list(set(casillasParaIterar))
-
+    casillasParaIterarSet.reverse()
     
     # Se descartan los nodos irrelevantes
     for u in casillasParaIterarSet:
         if u in casillasMarcadas:
             casillasParaIterarSet.remove(u)
         
-    print("casillas para interar antes de la iteración")
+    print("casillas para recorrer antes de la iteración")
     print(casillasParaIterarSet)
 
     for p in range(len(casillasParaIterarSet)):
         print("Consultando probabilidad de la casilla: " + casillasParaIterarSet[p])
-        print(casillasParaIterarSet)
-        print(casillasParaIterarSet[p])
+        # print(casillasParaIterarSet)
+        # print(casillasParaIterarSet[p])
         modeloCopia = modelo.copy()
         nodosDescartados = []
         noBorrar =[]
@@ -131,7 +131,7 @@ while game.game_status == 2:
         """
         Model_Game_ev = pgmi.VariableElimination(modeloCopia)
         consulta = Model_Game_ev.query([casillasParaIterarSet[p]], evidencias)
-        print(consulta[casillasParaIterarSet[p]])
+        # print(consulta[casillasParaIterarSet[p]])
         print(consulta[casillasParaIterarSet[p]].values)
         # casillasParaIterarSet.remove(casillasParaIterarSet[p])
         valores = consulta[casillasParaIterarSet[p]].values
@@ -139,15 +139,16 @@ while game.game_status == 2:
         
         descubierto = False
 
-        if valores[1] >= 0.9:
+        if valores[1] >= 0.750:
                 game.play_move("flag",int(kee),int(lee))
                 casillasMarcadas.append("X"+str(kee)+str(lee))
                 continue
 
-        if valores[0] >= 0.9:
-            print("Se ha descubierto que la casilla " + casillasParaIterarSet[p] + " es la que menos posibilidades tiene de contener una mina, en concreto: " + str(valores[0]))
-            print("Click en " + casillasParaIterarSet[p] + " ?. Pulsa enter para continuar")
-            print("Click on: "+str(kee)+","+str(lee))
+        if valores[0] >= 0.850:
+            valorReal = 1 - valores[0]
+            print("Se ha descubierto que la casilla " + casillasParaIterarSet[p] + " es la que menos posibilidades tiene de contener una mina, en concreto: " + str(valorReal))
+            # print("Click en " + casillasParaIterarSet[p])
+            print("Click en: "+str(kee)+","+str(lee))
             game.play_move("click",int(kee),int(lee))
             game.print_board()
             board = game.board
@@ -188,7 +189,7 @@ while game.game_status == 2:
     # for x in range(len(casillasParaIterarSet)):
     #    # listaDeProbsFinales.append(consulta[casillasParaIterarSet[x]].values)
     if descubierto is False:
-        print("casillas para interar despues de la iteración")
+        print("casillas para recorrer despues de la iteración")
         print(casillasParaIterarSet)
         listasCeros = [item[0] for item in listaDeProbsFinales]
         con_bombas = [item[1] for item in listaDeProbsFinales]
@@ -197,7 +198,7 @@ while game.game_status == 2:
         for h in range(len(con_bombas)):
             #Aquí estamos viendo si un número enorme en coma flotante es idéntico a 1, llega un punto al final del algoritmo, en el que en las últimas iteraciones la probabilidad de bomba para 
             #para una casilla no se acerca a 1.0 y no podemos marcarla bien con flag para ganar el juego.
-            if con_bombas[h] >= .998:
+            if con_bombas[h] >= .800:
                 elemento = casillasParaIterarSet[h]
                 # elementos.append(sindescubrir[h])
                 ke = elemento[1:2]
@@ -217,12 +218,13 @@ while game.game_status == 2:
         else:
             maximo = max(listasCeros)
             winner = casillasParaIterarSet[listasCeros.index(maximo)]
-            print("Se ha descubierto que la casilla " + winner + " es la que menos posibilidades tiene de contener una mina, en concreto: " + str(maximo))
-            print("Click en " + winner + " ?. Pulsa enter para continuar")
+            res = 1 - maximo
+            print("Se ha descubierto que la casilla " + winner + " es la que menos posibilidades tiene de contener una mina, en concreto: " + str(res))
+            # print("Click en " + winner + " ?. Pulsa enter para continuar")
             # input()  
             k = winner[1:2]
             l = winner[2:3]
-            print("Click on: "+str(k)+","+str(l))
+            print("Click en: "+str(k)+","+str(l))
             game.play_move("click",int(k),int(l))
             game.print_board()
             board = game.board
