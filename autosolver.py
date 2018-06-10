@@ -7,7 +7,7 @@ import pgmpy.inference as pgmi
 import networkx
 import sys
 import pgmpy.inference.EliminationOrder as elor
-game = MSGame(10, 10, 25)
+game = MSGame(10, 10, 6)
 modelo = gameNetworkGenerator(game)
 
 
@@ -105,33 +105,29 @@ while game.game_status == 2:
         noBorrar.append(casillasParaIterarSet[p])
         nodosDescartados=[]
         for vesiii in listaVecinosConsulta:
+            # if vesiii in list(evidencias.keys()):
             ke = vesiii[1:2]
             le = vesiii[2:3]
             noBorrar.append("Y"+str(ke)+str(le))
             noBorrar.append(vesiii)
-            listaVecinosVecino = game.neightbours_of_position(int(ke),int(le))
-            for vesinoDeVesino in listaVecinosVecino:
-                kee = vesinoDeVesino[1:2]
-                lee = vesinoDeVesino[2:3]
-                noBorrar.append("Y"+str(ke)+str(le))
-                noBorrar.append(vesinoDeVesino)
+            # print("NB")
+            # print(noBorrar)
         for y in modeloCopia.nodes():
-            if y not in noBorrar:
+            if y not in noBorrar and y not in evidencias.keys():
                 nodosDescartados.append(y)
-        evidenciasIteracion = {}
-        for h in noBorrar:
-            if h in evidencias.keys():
-                valorEnEvidencias = evidencias.get(h)
-                evidenciasIteracion[h] = valorEnEvidencias
+        # evidenciasIteracion = {}
+        # for h in noBorrar:
+        #     if h in evidencias.keys():
+        #         valorEnEvidencias = evidencias.get(h)
+        #         evidenciasIteracion[h] = valorEnEvidencias
 
         modeloCopia.remove_nodes_from(nodosDescartados)
         """
         Ahora mismo coge las Ys evidencias y todas las X vecinos.
 
         """
-        print(evidenciasIteracion)
         Model_Game_ev = pgmi.VariableElimination(modeloCopia)
-        consulta = Model_Game_ev.query([casillasParaIterarSet[p]], evidenciasIteracion)
+        consulta = Model_Game_ev.query([casillasParaIterarSet[p]], evidencias)
         print(consulta[casillasParaIterarSet[p]])
         print(consulta[casillasParaIterarSet[p]].values)
         # casillasParaIterarSet.remove(casillasParaIterarSet[p])
