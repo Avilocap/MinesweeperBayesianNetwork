@@ -7,7 +7,7 @@ import pgmpy.inference as pgmi
 import networkx
 import sys
 import pgmpy.inference.EliminationOrder as elor
-game = MSGame(10, 10, 6)
+game = MSGame(10, 10, 25)
 modelo = gameNetworkGenerator(game)
 
 
@@ -33,6 +33,18 @@ print("")
 game.print_board()
 print(board.mine_map)
 casillasMarcadas = []
+
+
+def calcularMinasColindantes(posX,posY):
+    count = 0
+    vecinos = game.neightbours_of_position(posX,posY)
+    for vecino in vecinos:
+        x = vecino[1:2]
+        y = vecino[2:3]
+        if game.board.mine_map[int(y),int(x)] == 1:
+            count = count + 1
+    return count
+
 while game.game_status == 2:
     no_bombas_enYij={} 
     no_bombas_enXij={} 
@@ -54,6 +66,8 @@ while game.game_status == 2:
                 sindescubrir.append("X" + str(i) + str(j))
             elif field_status == 9:
                 evidencias["X" + str(i) + str(j)] = 1
+                # minas = calcularMinasColindantes(i,j)
+                # evidencias["Y" + str(i) + str(j)] = minas
     print("")
     print("△ Evidencias descubiertas tras el click  -----------------------------")
     print("")
@@ -92,6 +106,8 @@ while game.game_status == 2:
     print(casillasParaIterarSet)
 
     for p in range(len(casillasParaIterarSet)):
+
+        
         print("Consultando probabilidad de la casilla: " + casillasParaIterarSet[p])
         print(casillasParaIterarSet)
         print(casillasParaIterarSet[p])
@@ -101,17 +117,28 @@ while game.game_status == 2:
         ke = casillasParaIterarSet[p][1:2]
         le = casillasParaIterarSet[p][2:3]
         listaVecinosConsulta = game.neightbours_of_position(int(ke),int(le))
+        
+        # Consultamos el número de evidencias para 
+
+
         noBorrar.append("Y"+str(ke)+str(le))
         noBorrar.append(casillasParaIterarSet[p])
         nodosDescartados=[]
+        contadorEvideciasVecinos = 0
         for vesiii in listaVecinosConsulta:
-            # if vesiii in list(evidencias.keys()):
+            if vesiii in list(evidencias.keys()):
+                contadorEvideciasVecinos = contadorEvideciasVecinos + 1
             ke = vesiii[1:2]
             le = vesiii[2:3]
             noBorrar.append("Y"+str(ke)+str(le))
             noBorrar.append(vesiii)
             # print("NB")
             # print(noBorrar)
+        print("número de evidencias en esta iteración:")
+        print(contadorEvideciasVecinos)
+        if contadorEvideciasVecinos ==1:
+            continue
+
         for y in modeloCopia.nodes():
             if y not in noBorrar and y not in evidencias.keys():
                 nodosDescartados.append(y)
@@ -226,4 +253,4 @@ while game.game_status == 2:
         # else:
 
 
-        
+
