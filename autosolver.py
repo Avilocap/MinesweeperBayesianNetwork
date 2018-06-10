@@ -139,12 +139,12 @@ while game.game_status == 2:
         
         descubierto = False
 
-        if valores[1] <= 0.9:
+        if valores[1] >= 0.9:
                 game.play_move("flag",int(kee),int(lee))
                 casillasMarcadas.append("X"+str(kee)+str(lee))
                 continue
 
-        if valores[0] <= 0.9:
+        if valores[0] >= 0.9:
             print("Se ha descubierto que la casilla " + casillasParaIterarSet[p] + " es la que menos posibilidades tiene de contener una mina, en concreto: " + str(valores[0]))
             print("Click en " + casillasParaIterarSet[p] + " ?. Pulsa enter para continuar")
             print("Click on: "+str(kee)+","+str(lee))
