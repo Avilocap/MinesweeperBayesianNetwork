@@ -203,7 +203,7 @@ while game.game_status == 2:
     for h in range(len(con_bombas)):
         #Aquí estamos viendo si un número enorme en coma flotante es idéntico a 1, llega un punto al final del algoritmo, en el que en las últimas iteraciones la probabilidad de bomba para 
         #para una casilla no se acerca a 1.0 y no podemos marcarla bien con flag para ganar el juego.
-        if con_bombas[h] >= .998:
+        if con_bombas[h] >= .888:
             elemento = casillasParaIterarSet[h]
             # elementos.append(sindescubrir[h])
             ke = elemento[1:2]
