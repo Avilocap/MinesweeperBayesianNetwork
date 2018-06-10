@@ -7,7 +7,7 @@ import pgmpy.inference as pgmi
 import networkx
 import sys
 import pgmpy.inference.EliminationOrder as elor
-game = MSGame(10, 10, 6)
+game = MSGame(10, 10, 25)
 modelo = gameNetworkGenerator(game)
 
 
@@ -103,34 +103,35 @@ while game.game_status == 2:
         listaVecinosConsulta = game.neightbours_of_position(int(ke),int(le))
         noBorrar.append("Y"+str(ke)+str(le))
         noBorrar.append(casillasParaIterarSet[p])
-        # for k in list(evidencias.keys()):
-        #     noBorrar.append(k)
-        # print(noBorrar)
         nodosDescartados=[]
         for vesiii in listaVecinosConsulta:
-            # if vesiii in list(evidencias.keys()):
             ke = vesiii[1:2]
             le = vesiii[2:3]
             noBorrar.append("Y"+str(ke)+str(le))
             noBorrar.append(vesiii)
-            # print("NB")
-            # print(noBorrar)
+            listaVecinosVecino = game.neightbours_of_position(int(ke),int(le))
+            for vesinoDeVesino in listaVecinosVecino:
+                kee = vesinoDeVesino[1:2]
+                lee = vesinoDeVesino[2:3]
+                noBorrar.append("Y"+str(ke)+str(le))
+                noBorrar.append(vesinoDeVesino)
         for y in modeloCopia.nodes():
-            if y not in noBorrar and y not in evidencias.keys():
+            if y not in noBorrar:
                 nodosDescartados.append(y)
-        # evidenciasIteracion = {}
-        # for h in noBorrar:
-        #     if h in evidencias.keys():
-        #         valorEnEvidencias = evidencias.get(h)
-        #         evidenciasIteracion[h] = valorEnEvidencias
+        evidenciasIteracion = {}
+        for h in noBorrar:
+            if h in evidencias.keys():
+                valorEnEvidencias = evidencias.get(h)
+                evidenciasIteracion[h] = valorEnEvidencias
 
         modeloCopia.remove_nodes_from(nodosDescartados)
         """
         Ahora mismo coge las Ys evidencias y todas las X vecinos.
 
         """
+        print(evidenciasIteracion)
         Model_Game_ev = pgmi.VariableElimination(modeloCopia)
-        consulta = Model_Game_ev.query([casillasParaIterarSet[p]], evidencias)
+        consulta = Model_Game_ev.query([casillasParaIterarSet[p]], evidenciasIteracion)
         print(consulta[casillasParaIterarSet[p]])
         print(consulta[casillasParaIterarSet[p]].values)
         # casillasParaIterarSet.remove(casillasParaIterarSet[p])
