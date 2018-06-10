@@ -7,7 +7,7 @@ import pgmpy.inference as pgmi
 import networkx
 import sys
 import pgmpy.inference.EliminationOrder as elor
-game = MSGame(10, 10, 25)
+game = MSGame(10, 10, 6)
 modelo = gameNetworkGenerator(game)
 
 
@@ -33,18 +33,6 @@ print("")
 game.print_board()
 print(board.mine_map)
 casillasMarcadas = []
-
-
-def calcularMinasColindantes(posX,posY):
-    count = 0
-    vecinos = game.neightbours_of_position(posX,posY)
-    for vecino in vecinos:
-        x = vecino[1:2]
-        y = vecino[2:3]
-        if game.board.mine_map[int(y),int(x)] == 1:
-            count = count + 1
-    return count
-
 while game.game_status == 2:
     no_bombas_enYij={} 
     no_bombas_enXij={} 
@@ -66,13 +54,11 @@ while game.game_status == 2:
                 sindescubrir.append("X" + str(i) + str(j))
             elif field_status == 9:
                 evidencias["X" + str(i) + str(j)] = 1
-                # minas = calcularMinasColindantes(i,j)
-                # evidencias["Y" + str(i) + str(j)] = minas
     print("")
     print("△ Evidencias descubiertas tras el click  -----------------------------")
-    # print("")
-    # print(" ◻︎ Número de evicencias : %d" % len (evidencias))
-    # print("")
+    print("")
+    print(" ◻︎ Número de evicencias : %d" % len (evidencias))
+    print("")
     print(evidencias)
     print("")
     print("-------  △  -- "+bcolors.OKBLUE+" CALCULANDO SIGUIENTE MOVIMIENTO"+bcolors.ENDC+"  --  △   ---------------------------------")
@@ -102,43 +88,33 @@ while game.game_status == 2:
         if u in casillasMarcadas:
             casillasParaIterarSet.remove(u)
         
-    # print("casillas para interar antes de la iteración")
-    # print(casillasParaIterarSet)
+    print("casillas para interar antes de la iteración")
+    print(casillasParaIterarSet)
 
     for p in range(len(casillasParaIterarSet)):
-
-        
         print("Consultando probabilidad de la casilla: " + casillasParaIterarSet[p])
-        # print(casillasParaIterarSet)
-        # print(casillasParaIterarSet[p])
+        print(casillasParaIterarSet)
+        print(casillasParaIterarSet[p])
         modeloCopia = modelo.copy()
         nodosDescartados = []
         noBorrar =[]
-        ke = casillasParaIterarSet[p][1:2]
-        le = casillasParaIterarSet[p][2:3]
-        listaVecinosConsulta = game.neightbours_of_position(int(ke),int(le))
-        
-        # Consultamos el número de evidencias para 
-
-
-        noBorrar.append("Y"+str(ke)+str(le))
+        kee = casillasParaIterarSet[p][1:2]
+        lee = casillasParaIterarSet[p][2:3]
+        listaVecinosConsulta = game.neightbours_of_position(int(kee),int(lee))
+        noBorrar.append("Y"+str(kee)+str(lee))
         noBorrar.append(casillasParaIterarSet[p])
+        # for k in list(evidencias.keys()):
+        #     noBorrar.append(k)
+        # print(noBorrar)
         nodosDescartados=[]
-        contadorEvideciasVecinos = 0
         for vesiii in listaVecinosConsulta:
-            if vesiii in list(evidencias.keys()):
-                contadorEvideciasVecinos = contadorEvideciasVecinos + 1
+            # if vesiii in list(evidencias.keys()):
             ke = vesiii[1:2]
             le = vesiii[2:3]
             noBorrar.append("Y"+str(ke)+str(le))
             noBorrar.append(vesiii)
             # print("NB")
             # print(noBorrar)
-        print("número de evidencias en esta iteración:")
-        print(contadorEvideciasVecinos)
-        if contadorEvideciasVecinos ==1:
-            continue
-
         for y in modeloCopia.nodes():
             if y not in noBorrar and y not in evidencias.keys():
                 nodosDescartados.append(y)
@@ -158,9 +134,26 @@ while game.game_status == 2:
         print(consulta[casillasParaIterarSet[p]])
         print(consulta[casillasParaIterarSet[p]].values)
         # casillasParaIterarSet.remove(casillasParaIterarSet[p])
-        listaDeProbsFinales.append(consulta[casillasParaIterarSet[p]].values)
+        valores = consulta[casillasParaIterarSet[p]].values
+        listaDeProbsFinales.append(valores)
         
-        
+        descubierto = False
+
+        if valores[1] == 1:
+                game.play_move("flag",int(kee),int(lee))
+                casillasMarcadas.append("X"+str(kee)+str(lee))
+                continue
+
+        if valores[0] == 1:
+            print("Se ha descubierto que la casilla " + casillasParaIterarSet[p] + " es la que menos posibilidades tiene de contener una mina, en concreto: " + str(valores[0]))
+            print("Click en " + casillasParaIterarSet[p] + " ?. Pulsa enter para continuar")
+            print("Click on: "+str(kee)+","+str(lee))
+            game.play_move("click",int(kee),int(lee))
+            game.print_board()
+            board = game.board
+            print("----------------------------------------------------------------------------------------------------------------------")
+            descubierto = True
+            break
 
 
 
@@ -194,63 +187,64 @@ while game.game_status == 2:
 
     # for x in range(len(casillasParaIterarSet)):
     #    # listaDeProbsFinales.append(consulta[casillasParaIterarSet[x]].values)
-    print("casillas para interar despues de la iteración")
-    print(casillasParaIterarSet)
-    listasCeros = [item[0] for item in listaDeProbsFinales]
-    con_bombas = [item[1] for item in listaDeProbsFinales]
-    elementos = []
-    
-    for h in range(len(con_bombas)):
-        #Aquí estamos viendo si un número enorme en coma flotante es idéntico a 1, llega un punto al final del algoritmo, en el que en las últimas iteraciones la probabilidad de bomba para 
-        #para una casilla no se acerca a 1.0 y no podemos marcarla bien con flag para ganar el juego.
-        if con_bombas[h] >= .888:
-            elemento = casillasParaIterarSet[h]
-            # elementos.append(sindescubrir[h])
-            ke = elemento[1:2]
-            le = elemento[2:3]
-            game.play_move("flag",int(ke),int(le))
-            casillasMarcadas.append("X"+str(ke)+str(le))
-            print("Casillas marcadas")
-            print(casillasMarcadas)
-            
+    if descubierto is False:
+        print("casillas para interar despues de la iteración")
+        print(casillasParaIterarSet)
+        listasCeros = [item[0] for item in listaDeProbsFinales]
+        con_bombas = [item[1] for item in listaDeProbsFinales]
+        elementos = []
         
-        # print(board.info_map)
-    if game.game_status == 1:
-        print("")
-        # print(bcolors.OKGREEN + "¡¡ SE HAN MARCADO TODAS LAS MINAS Y NO HAN EXPLOTADO !!" + bcolors.ENDC)
-        # print("")
-        game.print_board()
-    else:
-        maximo = max(listasCeros)
-        winner = casillasParaIterarSet[listasCeros.index(maximo)]
-        print("Se ha descubierto que la casilla " + winner + " es la que menos posibilidades tiene de contener una mina, en concreto: " + str(maximo))
-        print("Click en " + winner + " ?. Pulsa enter para continuar")
-        # input()  
-        k = winner[1:2]
-        l = winner[2:3]
-        print("Click on: "+str(k)+","+str(l))
-        game.play_move("click",int(k),int(l))
-        game.print_board()
-        board = game.board
-        print("----------------------------------------------------------------------------------------------------------------------")
-        # print(elementos)
-        # print(sindescubrir)
-        # print(listaDeProbsFinales)
-        # listaSorteo = sindescubrir
-        # if listasCeros.count(listasCeros[0]) == len(listasCeros):
-        #     for p in sindescubrir:
-        #         if p in casillasParaIterarSet:
-        #             listaSorteo.remove(p)
-        #     indiceCazilla = randint(0,len(listaSorteo)-1)
-        #     cazilla = listaSorteo[indiceCazilla]
-        #     m = cazilla[1:2]
-        #     n = cazilla[2:3]
-        #     game.play_move("click",int(m),int(n))
-        #     print("△ Move --> click: " + str(posX)+","+str(posY)+"  ---------------------------------------")
-        #     game.print_board()
+        for h in range(len(con_bombas)):
+            #Aquí estamos viendo si un número enorme en coma flotante es idéntico a 1, llega un punto al final del algoritmo, en el que en las últimas iteraciones la probabilidad de bomba para 
+            #para una casilla no se acerca a 1.0 y no podemos marcarla bien con flag para ganar el juego.
+            if con_bombas[h] >= .998:
+                elemento = casillasParaIterarSet[h]
+                # elementos.append(sindescubrir[h])
+                ke = elemento[1:2]
+                le = elemento[2:3]
+                game.play_move("flag",int(ke),int(le))
+                casillasMarcadas.append("X"+str(ke)+str(le))
+                print("Casillas marcadas")
+                print(casillasMarcadas)
+                
+            
+            # print(board.info_map)
+        if game.game_status == 1:
+            print("")
+            # print(bcolors.OKGREEN + "¡¡ SE HAN MARCADO TODAS LAS MINAS Y NO HAN EXPLOTADO !!" + bcolors.ENDC)
+            # print("")
+            game.print_board()
+        else:
+            maximo = max(listasCeros)
+            winner = casillasParaIterarSet[listasCeros.index(maximo)]
+            print("Se ha descubierto que la casilla " + winner + " es la que menos posibilidades tiene de contener una mina, en concreto: " + str(maximo))
+            print("Click en " + winner + " ?. Pulsa enter para continuar")
+            # input()  
+            k = winner[1:2]
+            l = winner[2:3]
+            print("Click on: "+str(k)+","+str(l))
+            game.play_move("click",int(k),int(l))
+            game.print_board()
+            board = game.board
+            print("----------------------------------------------------------------------------------------------------------------------")
+            # print(elementos)
+            # print(sindescubrir)
+            # print(listaDeProbsFinales)
+            # listaSorteo = sindescubrir
+            # if listasCeros.count(listasCeros[0]) == len(listasCeros):
+            #     for p in sindescubrir:
+            #         if p in casillasParaIterarSet:
+            #             listaSorteo.remove(p)
+            #     indiceCazilla = randint(0,len(listaSorteo)-1)
+            #     cazilla = listaSorteo[indiceCazilla]
+            #     m = cazilla[1:2]
+            #     n = cazilla[2:3]
+            #     game.play_move("click",int(m),int(n))
+            #     print("△ Move --> click: " + str(posX)+","+str(posY)+"  ---------------------------------------")
+            #     game.print_board()
 
 
-        # else:
+            # else:
 
 
-
+        
