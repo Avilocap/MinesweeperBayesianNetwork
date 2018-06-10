@@ -70,9 +70,9 @@ while game.game_status == 2:
                 # evidencias["Y" + str(i) + str(j)] = minas
     print("")
     print("△ Evidencias descubiertas tras el click  -----------------------------")
-    print("")
-    print(" ◻︎ Número de evicencias : %d" % len (evidencias))
-    print("")
+    # print("")
+    # print(" ◻︎ Número de evicencias : %d" % len (evidencias))
+    # print("")
     print(evidencias)
     print("")
     print("-------  △  -- "+bcolors.OKBLUE+" CALCULANDO SIGUIENTE MOVIMIENTO"+bcolors.ENDC+"  --  △   ---------------------------------")
@@ -102,15 +102,15 @@ while game.game_status == 2:
         if u in casillasMarcadas:
             casillasParaIterarSet.remove(u)
         
-    print("casillas para interar antes de la iteración")
-    print(casillasParaIterarSet)
+    # print("casillas para interar antes de la iteración")
+    # print(casillasParaIterarSet)
 
     for p in range(len(casillasParaIterarSet)):
 
         
         print("Consultando probabilidad de la casilla: " + casillasParaIterarSet[p])
-        print(casillasParaIterarSet)
-        print(casillasParaIterarSet[p])
+        # print(casillasParaIterarSet)
+        # print(casillasParaIterarSet[p])
         modeloCopia = modelo.copy()
         nodosDescartados = []
         noBorrar =[]
