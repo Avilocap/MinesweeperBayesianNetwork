@@ -1,4 +1,6 @@
 import random
+import msboard as ms
+import msgame as mg
 
 def seleccionar_probabilidad(cpd, valor, evidencia):
     padres = [v for v in cpd.variables if v != cpd.variable]
@@ -12,3 +14,5 @@ def generar_valor_aleatorio(cardinalidad, probabilidades):
         acumuladas += probabilidades[valor]
         if p <= acumuladas:
             return valor
+
+

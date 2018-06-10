@@ -7,7 +7,6 @@ import pgmpy.inference as pgmi
 import networkx
 import sys
 import pgmpy.inference.EliminationOrder as elor
-import utils as ut
 game = MSGame(10, 10, 25)
 modelo = gameNetworkGenerator(game)
 
@@ -17,19 +16,21 @@ print("")
 print("△ Tablero ------------------------------------------------------")
 print("")
 game.print_board()
+board = game.board
+print(board.mine_map)
 posX = randint(0,game.board_width-1)
 posY = randint(0,game.board_width-1)
 try:
     input = raw_input
 except NameError:
     pass
+
+# game.mover_minas_alrededor(posX,posY)
+game.mover_minas_alrededor(posX,posY)
 game.play_move("click",posX,posY)
 print("△ Move --> click: " + str(posX)+","+str(posY)+"  ---------------------------------------")
 print("")
 game.print_board()
-board = game.board
-# print(board.info_map)
-# print("")
 print(board.mine_map)
 casillasMarcadas = []
 while game.game_status == 2:
@@ -105,11 +106,11 @@ while game.game_status == 2:
         # print(noBorrar)
         nodosDescartados=[]
         for vesiii in listaVecinosConsulta:
-            if vesiii in list(evidencias.keys()):
-                ke = vesiii[1:2]
-                le = vesiii[2:3]
-                noBorrar.append(vesiii)
-                noBorrar.append("Y"+str(ke)+str(le))
+            # if vesiii in list(evidencias.keys()):
+            ke = vesiii[1:2]
+            le = vesiii[2:3]
+            noBorrar.append("Y"+str(ke)+str(le))
+            noBorrar.append(vesiii)
             # print("NB")
             # print(noBorrar)
         for y in modeloCopia.nodes():
@@ -120,25 +121,12 @@ while game.game_status == 2:
             if h in evidencias.keys():
                 valorEnEvidencias = evidencias.get(h)
                 evidenciasIteracion[h] = valorEnEvidencias
-        # print("No borrar")
-        # print(noBorrar)
-        # print(evidenciasIteracion)
-        # potenciales = ut.potencialesIniciales(modeloCopia,nodosDescartados,evidenciasIteracion)
-        # print(potenciales)
-        # print(modeloCopia.nodes())
-        # print(evidenciasIteracion)
-       
 
         modeloCopia.remove_nodes_from(nodosDescartados)
-        
-        # for clave, valor in potenciales.items():
-        #     print(clave)
-        #     print(valor.scope())
-        #     print(valor)
-        
-        # resultado = ut.reducePotenciales(ut.eliminaVariables(potenciales,[casillasParaIterarSet[p]],evidenciasIteracion))
-        # print(resultado)
-    
+        """
+        Ahora mismo coge las Ys evidencias y todas las X vecinos.
+
+        """
         Model_Game_ev = pgmi.VariableElimination(modeloCopia)
         consulta = Model_Game_ev.query([casillasParaIterarSet[p]], evidenciasIteracion)
         print(consulta[casillasParaIterarSet[p]])

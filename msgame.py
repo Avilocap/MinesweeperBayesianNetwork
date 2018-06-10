@@ -419,9 +419,39 @@ class MSGame(object):
             a valid message should be in:
             "[move type]: [X], [Y]"
         """
+        
         move_type, move_x, move_y = self.parse_move(move_msg)
+        
         self.play_move(move_type, move_x, move_y)
 
+    def mover_minas_alrededor(self,posi,posj):
+        
+        if self.board.mine_map[posj,posi] == 1:
+           self.board.mine_map[posj,posi] = 0 
+        
+        vecinos = self.neightbours_of_position(posi,posj)
+        for vecino in vecinos:
+            i = int(vecino[1:2])
+            j = int(vecino[2:3])
+            if self.board.mine_map[j,i] == 1:
+                self.mover_mina_a_esquina(j,i)
+
+
+    def mover_mina_a_esquina(self,posx,posi):
+
+        if self.board.mine_map[self.board.board_width-1,self.board.board_height-1] == 0:
+            self.board.mine_map[posx,posi] = 0
+            self.board.mine_map[self.board.board_width-1,self.board.board_height-1] = 1
+        elif self.board.mine_map[0,0] == 0:
+            self.board.mine_map[posx,posi] = 0
+            self.board.mine_map[0,0] = 1
+        elif self.board.mine_map[self.board.board_width-1,0] == 0:
+            self.board.mine_map[posx,posi] = 0
+            self.board.mine_map[self.board.board_width-1,0] = 1
+        elif self.board.mine_map[0,self.board.board_height-1] == 0:
+            self.board.mine_map[posx,posi] = 0
+            self.board.mine_map[0,self.board.board_height-1] = 1
+        
     # def tcp_accept(self):
     #     """Waiting for a TCP connection."""
     #     self.conn, self.addr = self.tcp_socket.accept()
@@ -460,3 +490,5 @@ class MSGame(object):
     #     self.tcp_send(help_msg)
 
     
+
+        
