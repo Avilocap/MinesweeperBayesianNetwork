@@ -138,9 +138,10 @@ while game.game_status == 2:
             noBorrar.append(vesiii)
             # print("NB")
             # print(noBorrar)
-
+        print()
         print("número de evidencias en esta iteración:")
         print(contadorEvideciasVecinos)
+        print()
         if contadorEvideciasVecinos < 2:
             continue
 
