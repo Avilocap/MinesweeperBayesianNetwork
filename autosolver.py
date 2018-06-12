@@ -7,7 +7,7 @@ import pgmpy.inference as pgmi
 import networkx
 import sys
 import pgmpy.inference.EliminationOrder as elor
-game = MSGame(10, 10, 20)
+game = MSGame(10, 10, 23)
 modelo = gameNetworkGenerator(game)
 
 
@@ -33,6 +33,10 @@ print("")
 game.print_board()
 print(board.mine_map)
 casillasMarcadas = []
+reverse = False
+
+
+
 while game.game_status == 2:
     no_bombas_enYij={} 
     no_bombas_enXij={} 
@@ -54,6 +58,8 @@ while game.game_status == 2:
                 sindescubrir.append("X" + str(i) + str(j))
             elif field_status == 9:
                 evidencias["X" + str(i) + str(j)] = 1
+                # evidencias["Y" + str(i) + str(j)] = field_status
+
     print("")
     print("△ Evidencias descubiertas tras el click  -----------------------------")
     print("")
@@ -80,14 +86,24 @@ while game.game_status == 2:
             if vesii not in list(evidencias.keys()):
                 casillasParaIterar.append(vesii)
     
+
+    
+        
+
     casillasParaIterarSet = list(set(casillasParaIterar))
-    casillasParaIterarSet.reverse()
+    if(reverse is False):
+        print("reverse!")
+        rr = reversed(casillasParaIterarSet)
+        casillasParaIterarSet = list(rr)
+        reverse = True
+    else:
+        reverse =  False
     
     # Se descartan los nodos irrelevantes
     for u in casillasParaIterarSet:
         if u in casillasMarcadas:
             casillasParaIterarSet.remove(u)
-        
+    
     print("casillas para recorrer antes de la iteración")
     print(casillasParaIterarSet)
 
@@ -107,14 +123,28 @@ while game.game_status == 2:
         #     noBorrar.append(k)
         # print(noBorrar)
         nodosDescartados=[]
+        contadorEvideciasVecinos = 0
+
+
+
+
         for vesiii in listaVecinosConsulta:
             # if vesiii in list(evidencias.keys()):
+            if vesiii in list(evidencias.keys()):
+                contadorEvideciasVecinos = contadorEvideciasVecinos + 1
             ke = vesiii[1:2]
             le = vesiii[2:3]
             noBorrar.append("Y"+str(ke)+str(le))
             noBorrar.append(vesiii)
             # print("NB")
             # print(noBorrar)
+
+        print("número de evidencias en esta iteración:")
+        print(contadorEvideciasVecinos)
+        if contadorEvideciasVecinos < 2:
+            continue
+
+
         for y in modeloCopia.nodes():
             if y not in noBorrar and y not in evidencias.keys():
                 nodosDescartados.append(y)
@@ -154,6 +184,7 @@ while game.game_status == 2:
             board = game.board
             print("----------------------------------------------------------------------------------------------------------------------")
             descubierto = True
+        
             break
 
 
@@ -215,6 +246,7 @@ while game.game_status == 2:
             # print(bcolors.OKGREEN + "¡¡ SE HAN MARCADO TODAS LAS MINAS Y NO HAN EXPLOTADO !!" + bcolors.ENDC)
             # print("")
             game.print_board()
+            break
         else:
             maximo = max(listasCeros)
             winner = casillasParaIterarSet[listasCeros.index(maximo)]
@@ -229,24 +261,7 @@ while game.game_status == 2:
             game.print_board()
             board = game.board
             print("----------------------------------------------------------------------------------------------------------------------")
-            # print(elementos)
-            # print(sindescubrir)
-            # print(listaDeProbsFinales)
-            # listaSorteo = sindescubrir
-            # if listasCeros.count(listasCeros[0]) == len(listasCeros):
-            #     for p in sindescubrir:
-            #         if p in casillasParaIterarSet:
-            #             listaSorteo.remove(p)
-            #     indiceCazilla = randint(0,len(listaSorteo)-1)
-            #     cazilla = listaSorteo[indiceCazilla]
-            #     m = cazilla[1:2]
-            #     n = cazilla[2:3]
-            #     game.play_move("click",int(m),int(n))
-            #     print("△ Move --> click: " + str(posX)+","+str(posY)+"  ---------------------------------------")
-            #     game.print_board()
 
-
-            # else:
 
 
         
