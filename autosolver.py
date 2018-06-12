@@ -162,6 +162,7 @@ while game.game_status == 2:
         Model_Game_ev = pgmi.VariableElimination(modeloCopia)
         consulta = Model_Game_ev.query([casillasParaIterarSet[p]], evidencias)
         # print(consulta[casillasParaIterarSet[p]])
+        print("[P. !BOMBA - P. BOMBA]")
         print(consulta[casillasParaIterarSet[p]].values)
         # casillasParaIterarSet.remove(casillasParaIterarSet[p])
         valores = consulta[casillasParaIterarSet[p]].values
