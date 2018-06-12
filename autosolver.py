@@ -7,7 +7,7 @@ import pgmpy.inference as pgmi
 import networkx
 import sys
 import pgmpy.inference.EliminationOrder as elor
-game = MSGame(10, 10, 23)
+game = MSGame(10, 10, 20)
 modelo = gameNetworkGenerator(game)
 
 
@@ -92,7 +92,6 @@ while game.game_status == 2:
 
     casillasParaIterarSet = list(set(casillasParaIterar))
     if(reverse is False):
-        print("reverse!")
         rr = reversed(casillasParaIterarSet)
         casillasParaIterarSet = list(rr)
         reverse = True
@@ -141,7 +140,7 @@ while game.game_status == 2:
         print()
         print("número de evidencias en esta iteración:")
         print(contadorEvideciasVecinos)
-        print()
+        
         if contadorEvideciasVecinos < 2:
             continue
 
@@ -258,8 +257,9 @@ while game.game_status == 2:
             game.print_board()
             break
         else:
-            maximo = max(casillasParaIterarSet[0])
+            maximo = max(listaDeProbsFinales)
             winner = casillasParaIterarSet[listasCeros.index(maximo)]
+            print(winner)
             res = 1 - maximo
             print("Se ha descubierto que la casilla " + winner + " es la que menos posibilidades tiene de contener una mina, en concreto: " + str(res))
             # print("Click en " + winner + " ?. Pulsa enter para continuar")
