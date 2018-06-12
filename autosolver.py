@@ -31,7 +31,7 @@ game.play_move("click",posX,posY)
 print("△ Move --> click: " + str(posX)+","+str(posY)+"  ---------------------------------------")
 print("")
 game.print_board()
-print(board.mine_map)
+# print(board.mine_map)
 casillasMarcadas = []
 reverse = False
 
@@ -172,6 +172,10 @@ while game.game_status == 2:
         if valores[1] >= 0.790:
                 game.play_move("flag",int(kee),int(lee))
                 casillasMarcadas.append("X"+str(kee)+str(lee))
+                print()
+                print("¡¡ Encontrada bomba !!")
+                print()
+                game.print_board()
                 continue
 
         if valores[0] >= 0.830:
@@ -236,6 +240,10 @@ while game.game_status == 2:
                 le = elemento[2:3]
                 game.play_move("flag",int(ke),int(le))
                 casillasMarcadas.append("X"+str(ke)+str(le))
+                print()
+                print("¡¡ Encontrada bomba !!")
+                print()
+                game.print_board()
                 print("Casillas marcadas")
                 print(casillasMarcadas)
                 
