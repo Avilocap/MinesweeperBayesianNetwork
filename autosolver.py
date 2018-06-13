@@ -258,7 +258,7 @@ while game.game_status == 2:
             break
         else:
             maximo = max(listaDeProbsFinales)
-            winner = casillasParaIterarSet[listasCeros.index(maximo)]
+            winner = listaDeProbsFinales[listasCeros.index(maximo)]
             print(winner)
             res = 1 - maximo
             print("Se ha descubierto que la casilla " + winner + " es la que menos posibilidades tiene de contener una mina, en concreto: " + str(res))
