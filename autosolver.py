@@ -8,7 +8,7 @@ import networkx
 import numpy
 import sys
 import pgmpy.inference.EliminationOrder as elor
-game = MSGame(8, 8, 14)
+game = MSGame(10, 10, 25)
 modelo = gameNetworkGenerator(game)
 
 
@@ -246,6 +246,7 @@ while game.game_status == 2:
             game.print_board()
             board = game.board
             print("----------------------------------------------------------------------------------------------------------------------")
+            
 
 
 
