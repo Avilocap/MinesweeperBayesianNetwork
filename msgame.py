@@ -427,8 +427,8 @@ class MSGame(object):
     def mover_minas_alrededor(self,posi,posj):
         
         if self.board.mine_map[posj,posi] == 1:
-           self.board.mine_map[posj,posi] = 0 
-        
+           self.mover_mina_a_esquina(posj,posi)
+
         vecinos = self.neightbours_of_position(posi,posj)
         for vecino in vecinos:
             i = int(vecino[1:2])
