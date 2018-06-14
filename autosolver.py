@@ -167,8 +167,10 @@ while game.game_status == 2:
         # casillasParaIterarSet.remove(casillasParaIterarSet[p])
         valores = consulta[casillasParaIterarSet[p]].values
         listaDeProbsFinales.append(valores)
-        
-        descubierto = False
+        try:
+            descubierto = False
+        except ValueError:
+            print(" !El tablero tiene muy pocas evidencias para porder calcular probabilidades en él!")
 
         if valores[1] >= 0.790:
                 game.play_move("flag",int(kee),int(lee))
