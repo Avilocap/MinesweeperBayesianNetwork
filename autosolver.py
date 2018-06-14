@@ -234,11 +234,11 @@ while game.game_status == 2:
             game.print_board()
             sys.exit()
         else:
-            maximo = numpy.amax(listasCeros)
+            maximo = numpy.amax(listaDeProbsFinales)
             winner = listaDeProbsFinales[listasCeros.index(maximo)]
             print(winner)
             res = 1 - maximo
-            print("Se ha descubierto que la casilla " + winner + " es la que menos posibilidades tiene de contener una mina, en concreto: " + str(res))
+            #print("Se ha descubierto que la casilla " + winner + " es la que menos posibilidades tiene de contener una mina, en concreto: " + str(res))
             # print("Click en " + winner + " ?. Pulsa enter para continuar")
             # input()  
             k = winner[1:2]
