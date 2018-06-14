@@ -192,7 +192,8 @@ while game.game_status == 2:
         
             break
 
-    
+        if casillasParaIterarSet.count == game.num_mines:
+            break
 
     # for x in range(len(casillasParaIterarSet)):
     #    # listaDeProbsFinales.append(consulta[casillasParaIterarSet[x]].values)
@@ -232,7 +233,7 @@ while game.game_status == 2:
                 game.print_board()
                 break
             else:
-                maximo = max(listasCeros)
+                maximo = max(listaDeProbsFinales)
                 winner = listaDeProbsFinales[listasCeros.index(maximo)]
                 print(winner)
                 res = 1 - maximo
