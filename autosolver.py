@@ -142,7 +142,7 @@ while game.game_status == 2:
         print("número de evidencias en esta iteración:")
         print(contadorEvideciasVecinos)
         descubierto = False
-        if contadorEvideciasVecinos < 2:
+        if contadorEvideciasVecinos < 1:
             continue
 
 
