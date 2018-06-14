@@ -8,7 +8,7 @@ import networkx
 import numpy
 import sys
 import pgmpy.inference.EliminationOrder as elor
-game = MSGame(5, 5, 7)
+game = MSGame(8, 8, 14)
 modelo = gameNetworkGenerator(game)
 
 
@@ -239,10 +239,10 @@ while game.game_status == 2:
             print("Se ha descubierto que la casilla " + winner + " es la que menos posibilidades tiene de contener una mina, en concreto: " + str(res))
             # print("Click en " + winner + " ?. Pulsa enter para continuar")
             # input()  
-            k = winner[1:2]
-            l = winner[2:3]
-            print("Click en: "+str(k)+","+str(l))
-            game.play_move("click",int(k),int(l))
+            tt = winner[1:2]
+            ss = winner[2:3]
+            print("Click en: "+str(tt)+","+str(ss))
+            game.play_move("click",int(tt),int(ss))
             game.print_board()
             board = game.board
             print("----------------------------------------------------------------------------------------------------------------------")
