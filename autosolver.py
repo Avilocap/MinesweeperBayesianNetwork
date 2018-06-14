@@ -179,7 +179,7 @@ while game.game_status == 2:
                 print()
                 game.print_board()
                 if casillasParaIterarSet.count == game.num_mines:
-                    break
+                    sys.exit()
                 continue
 
         if valores[0] >= 0.830:
@@ -232,7 +232,7 @@ while game.game_status == 2:
             # print(bcolors.OKGREEN + "¡¡ SE HAN MARCADO TODAS LAS MINAS Y NO HAN EXPLOTADO !!" + bcolors.ENDC)
             # print("")
             game.print_board()
-            break
+            sys.exit()
         else:
             maximo = numpy.amax(listasCeros)
             winner = listaDeProbsFinales[listasCeros.index(maximo)]
