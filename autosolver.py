@@ -8,8 +8,8 @@ import networkx
 import numpy
 import sys
 import pgmpy.inference.EliminationOrder as elor
-def autosolver():
-    game = MSGame(10, 10, 25)
+def autosolver(anchura, altura, numMinas):
+    game = MSGame(anchura, altura, numMinas)
     modelo = gameNetworkGenerator(game)
 
 
