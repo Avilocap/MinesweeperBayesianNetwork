@@ -178,7 +178,7 @@ while game.game_status == 2:
                 print("¡¡ Encontrada bomba !!")
                 print()
                 game.print_board()
-                if casillasParaIterarSet.count == game.num_mines:
+                if game.game_status == 1:
                     sys.exit()
                 continue
 
