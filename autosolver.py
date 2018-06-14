@@ -204,7 +204,7 @@ while game.game_status == 2:
             print("Pocas evidencias, reintentar")
             break
         print("casillas para recorrer despues de la iteración")
-        print(casillasParaIterarSet)
+        print(listaDeProbsFinales)
         listasCeros = [item[0] for item in listaDeProbsFinales]
         con_bombas = [item[1] for item in listaDeProbsFinales]
         elementos = []
@@ -234,8 +234,8 @@ while game.game_status == 2:
             game.print_board()
             sys.exit()
         else:
-            maximo = numpy.amax(listaDeProbsFinales)
-            winner = listaDeProbsFinales[listasCeros.index(maximo)]
+            maximo = numpy.amax(listasCeros)
+            winner = casillasParaIterarSet[listasCeros.index(maximo)]
             print(winner)
             res = 1 - maximo
             #print("Se ha descubierto que la casilla " + winner + " es la que menos posibilidades tiene de contener una mina, en concreto: " + str(res))
