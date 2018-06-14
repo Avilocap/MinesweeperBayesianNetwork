@@ -1,6 +1,6 @@
 import sys
 import os
-
+import autosolver as aut
 
 counter = 1
 
@@ -10,7 +10,7 @@ for i in range(counter):
     f = open('out'+str(i)+'.txt', 'w')
     sys.stdout = f
 
-    os.system("autosolver.py 1")
+    aut.autosolver()
 
     sys.stdout = orig_stdout
     f.close()
