@@ -234,7 +234,7 @@ while game.game_status == 2:
             game.print_board()
             break
         else:
-            maximo = numpy.amax(listaDeProbsFinales)
+            maximo = numpy.amax(listasCeros)
             winner = listaDeProbsFinales[listasCeros.index(maximo)]
             print(winner)
             res = 1 - maximo
