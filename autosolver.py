@@ -7,7 +7,7 @@ import pgmpy.inference as pgmi
 import networkx
 import sys
 import pgmpy.inference.EliminationOrder as elor
-game = MSGame(10, 10, 20)
+game = MSGame(5, 5, 5)
 modelo = gameNetworkGenerator(game)
 
 
@@ -191,34 +191,6 @@ while game.game_status == 2:
             descubierto = True
         
             break
-
-
-
-
-
-
-    # todas = sindescubrir + list(evidencias.keys())
-    
-    # padres = []
-    # modeloCopia = modelo.copy()
-    # for x in todas:
-    #     padres = modeloCopia.subgraph(networkx.ancestors(modeloCopia, x)).nodes() 
-    # for y in modeloCopia.nodes():
-    #     if y not in todas and y not in padres:
-    #         nodosDescartados.append(y)
-    
-    # modeloCopia.remove_nodes_from(nodosDescartados)
-
-    # print("Descartados")
-    # print(nodosDescartados)
-    # print("Padres")
-    # print(padres)
-    # print()
-    # print("nodos despues")
-    # print(modelo.nodes())
-
-    # Model_Game_ev = pgmi.VariableElimination(modeloCopia)
-    # consulta = Model_Game_ev.query(sindescubrir, evidencias)
 
     
 
