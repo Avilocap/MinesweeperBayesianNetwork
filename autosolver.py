@@ -177,6 +177,8 @@ while game.game_status == 2:
                 print("¡¡ Encontrada bomba !!")
                 print()
                 game.print_board()
+                if casillasParaIterarSet.count == game.num_mines:
+                    break
                 continue
 
         if valores[0] >= 0.830:
@@ -192,8 +194,7 @@ while game.game_status == 2:
         
             break
 
-        if casillasParaIterarSet.count == game.num_mines:
-            break
+        
 
     # for x in range(len(casillasParaIterarSet)):
     #    # listaDeProbsFinales.append(consulta[casillasParaIterarSet[x]].values)
