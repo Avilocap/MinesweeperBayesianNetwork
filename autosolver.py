@@ -5,6 +5,7 @@ from msboard import bcolors
 from random import randint
 import pgmpy.inference as pgmi
 import networkx
+import numpy
 import sys
 import pgmpy.inference.EliminationOrder as elor
 game = MSGame(5, 5, 5)
@@ -198,58 +199,56 @@ while game.game_status == 2:
 
     # for x in range(len(casillasParaIterarSet)):
     #    # listaDeProbsFinales.append(consulta[casillasParaIterarSet[x]].values)
-    try:
-        if descubierto is False:
-            if not listaDeProbsFinales:
-                print("Pocas evidencias, reintentar")
-                break
-            print("casillas para recorrer despues de la iteración")
-            print(casillasParaIterarSet)
-            listasCeros = [item[0] for item in listaDeProbsFinales]
-            con_bombas = [item[1] for item in listaDeProbsFinales]
-            elementos = []
-            for h in range(len(con_bombas)):
-                #Aquí estamos viendo si un número enorme en coma flotante es idéntico a 1, llega un punto al final del algoritmo, en el que en las últimas iteraciones la probabilidad de bomba para 
-                #para una casilla no se acerca a 1.0 y no podemos marcarla bien con flag para ganar el juego.
-                if con_bombas[h] >= .800:
-                    elemento = casillasParaIterarSet[h]
-                    # elementos.append(sindescubrir[h])
-                    ke = elemento[1:2]
-                    le = elemento[2:3]
-                    game.play_move("flag",int(ke),int(le))
-                    casillasMarcadas.append("X"+str(ke)+str(le))
-                    print()
-                    print("¡¡ Encontrada bomba !!")
-                    print()
-                    game.print_board()
-                    print("Casillas marcadas")
-                    print(casillasMarcadas)
-                    
+    if descubierto is False:
+        if not listaDeProbsFinales:
+            print("Pocas evidencias, reintentar")
+            break
+        print("casillas para recorrer despues de la iteración")
+        print(casillasParaIterarSet)
+        listasCeros = [item[0] for item in listaDeProbsFinales]
+        con_bombas = [item[1] for item in listaDeProbsFinales]
+        elementos = []
+        for h in range(len(con_bombas)):
+            #Aquí estamos viendo si un número enorme en coma flotante es idéntico a 1, llega un punto al final del algoritmo, en el que en las últimas iteraciones la probabilidad de bomba para 
+            #para una casilla no se acerca a 1.0 y no podemos marcarla bien con flag para ganar el juego.
+            if con_bombas[h] >= .800:
+                elemento = casillasParaIterarSet[h]
+                # elementos.append(sindescubrir[h])
+                ke = elemento[1:2]
+                le = elemento[2:3]
+                game.play_move("flag",int(ke),int(le))
+                casillasMarcadas.append("X"+str(ke)+str(le))
+                print()
+                print("¡¡ Encontrada bomba !!")
+                print()
+                game.print_board()
+                print("Casillas marcadas")
+                print(casillasMarcadas)
                 
-                # print(board.info_map)
-            if game.game_status == 1:
-                print("")
-                # print(bcolors.OKGREEN + "¡¡ SE HAN MARCADO TODAS LAS MINAS Y NO HAN EXPLOTADO !!" + bcolors.ENDC)
-                # print("")
-                game.print_board()
-                break
-            else:
-                maximo = max(listaDeProbsFinales)
-                winner = listaDeProbsFinales[listasCeros.index(maximo)]
-                print(winner)
-                res = 1 - maximo
-                print("Se ha descubierto que la casilla " + winner + " es la que menos posibilidades tiene de contener una mina, en concreto: " + str(res))
-                # print("Click en " + winner + " ?. Pulsa enter para continuar")
-                # input()  
-                k = winner[1:2]
-                l = winner[2:3]
-                print("Click en: "+str(k)+","+str(l))
-                game.play_move("click",int(k),int(l))
-                game.print_board()
-                board = game.board
-                print("----------------------------------------------------------------------------------------------------------------------")
-    except ValueError:
-        print(" !El tablero tiene muy pocas evidencias para porder calcular probabilidades en él!")    
+            
+            # print(board.info_map)
+        if game.game_status == 1:
+            print("")
+            # print(bcolors.OKGREEN + "¡¡ SE HAN MARCADO TODAS LAS MINAS Y NO HAN EXPLOTADO !!" + bcolors.ENDC)
+            # print("")
+            game.print_board()
+            break
+        else:
+            maximo = numpy.amax(listaDeProbsFinales).Any
+            winner = listaDeProbsFinales[listasCeros.index(maximo)]
+            print(winner)
+            res = 1 - maximo
+            print("Se ha descubierto que la casilla " + winner + " es la que menos posibilidades tiene de contener una mina, en concreto: " + str(res))
+            # print("Click en " + winner + " ?. Pulsa enter para continuar")
+            # input()  
+            k = winner[1:2]
+            l = winner[2:3]
+            print("Click en: "+str(k)+","+str(l))
+            game.play_move("click",int(k),int(l))
+            game.print_board()
+            board = game.board
+            print("----------------------------------------------------------------------------------------------------------------------")
+
 
 
 
