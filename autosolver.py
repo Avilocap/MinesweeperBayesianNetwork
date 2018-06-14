@@ -31,7 +31,7 @@ game.play_move("click",posX,posY)
 print("△ Move --> click: " + str(posX)+","+str(posY)+"  ---------------------------------------")
 print("")
 game.print_board()
-# print(board.mine_map)
+print(board.mine_map)
 casillasMarcadas = []
 reverse = False
 
