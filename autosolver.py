@@ -132,9 +132,9 @@ while game.game_status == 2:
             # if vesiii in list(evidencias.keys()):
             if vesiii in list(evidencias.keys()):
                 contadorEvideciasVecinos = contadorEvideciasVecinos + 1
-            ke = vesiii[1:2]
-            le = vesiii[2:3]
-            noBorrar.append("Y"+str(ke)+str(le))
+                ke = vesiii[1:2]
+                le = vesiii[2:3]
+                noBorrar.append("Y"+str(ke)+str(le))
             noBorrar.append(vesiii)
             # print("NB")
             # print(noBorrar)
