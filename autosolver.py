@@ -198,6 +198,9 @@ while game.game_status == 2:
     #    # listaDeProbsFinales.append(consulta[casillasParaIterarSet[x]].values)
     try:
         if descubierto is False:
+            if not listaDeProbsFinales:
+                print("Pocas evidencias, reintentar")
+                break
             print("casillas para recorrer despues de la iteración")
             print(casillasParaIterarSet)
             listasCeros = [item[0] for item in listaDeProbsFinales]
