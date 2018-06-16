@@ -13,7 +13,7 @@ for i in range(0,len(pruebas)-1):
         print(i)
         orig_stdout = sys.stdout
         print('Probando tablero: '+str(pruebas[i][0])+'x'+str(pruebas[i][1])+'_con_'+str(pruebas[i][2])+'minas')
-        f = open('Prueba_'+str(pruebas[i][0])+'x'+str(pruebas[i][1])+'_'+str(pruebas[i][2])+'_minas'+'.log', 'a')
+        f = open('Prueba_'+str(pruebas[i][0])+'x'+str(pruebas[i][1])+'_'+str(pruebas[i][2])+'_minas'+'.txt', 'w')
         sys.stdout = f
         start_time = time.time()
         status = aut.autosolver(pruebas[i][0],pruebas[i][1],pruebas[i][2])
