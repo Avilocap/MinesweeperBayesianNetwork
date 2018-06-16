@@ -179,8 +179,8 @@ def autosolver(anchura, altura, numMinas):
                     print("¡¡ Encontrada bomba !!")
                     print()
                     game.print_board()
-                    if game.game_status == 1:
-                        sys.exit()
+                    # if game.game_status == 1:
+                        # sys.exit()
                     continue
 
             if valores[0] >= 0.90:
@@ -231,7 +231,7 @@ def autosolver(anchura, altura, numMinas):
                 # print(bcolors.OKGREEN + "¡¡ SE HAN MARCADO TODAS LAS MINAS Y NO HAN EXPLOTADO !!" + bcolors.ENDC)
                 # print("")
                 game.print_board()
-                sys.exit()
+                # sys.exit()
             else:
                 maximo = numpy.amax(listasCeros)
                 winner = casillasParaIterarSet[listasCeros.index(maximo)]
@@ -248,7 +248,7 @@ def autosolver(anchura, altura, numMinas):
                 board = game.board
                 print("----------------------------------------------------------------------------------------------------------------------")
             
-
+    return game.game_status
 
 
 
