@@ -17,7 +17,7 @@ for i in range(0,len(pruebas)-1):
         start_time = time.time()
         status = aut.autosolver(pruebas[i][0],pruebas[i][1],pruebas[i][2])
         elapsed_time = time.time() - start_time
-        print("Tiempo trascurrido")
+        print("Tiempo transcurrido")
         print(str(datetime.timedelta(seconds=elapsed_time)))
         sys.stdout = orig_stdout
         f.close()
