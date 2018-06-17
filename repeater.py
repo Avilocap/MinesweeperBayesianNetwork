@@ -38,6 +38,7 @@ for i in range(0,len(pruebas)):
         
         if status == 0:
             success = False
+            print()
             print("Partida perdida, reintentando")
             print("Tiempo transcurrido:")
             print(str(datetime.timedelta(seconds=elapsed_time)))
@@ -45,6 +46,7 @@ for i in range(0,len(pruebas)):
             print()
         else:
             success = True
+            print()
             print("Partida ganada")
             print("Tiempo transcurrido:")
             print(str(datetime.timedelta(seconds=elapsed_time)))
