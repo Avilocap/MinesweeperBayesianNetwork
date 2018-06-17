@@ -5,8 +5,11 @@ import time
 import datetime
 from functools import wraps
 from itertools import cycle
+from msboard import bcolors
+
+
+
 pruebas = ([5,5,5],[5,5,6],[5,5,7],[8,8,13],[8,8,14],[8,8,15],[10,10,23],[10,10,24],[10,10,25])
-#pruebas = ([10,10,25],[5,5,2])
 
 """
 Recorre el array de pruebas dado [tam,tam,numBombas], crea el juego y la red bayesiana para resolverlo automáticamente,
@@ -21,17 +24,18 @@ pruebas = ([5,5,5],[5,5,6],[5,5,7],[8,8,13],[8,8,14],[8,8,15],[10,10,23],[10,10,
 for i in range(0,len(pruebas)):
     success = False
     while not success:
-        orig_stdout = sys.stdout
         print()
-        print('Generando tablero: '+str(pruebas[i][0])+' x '+str(pruebas[i][1])+' con '+str(pruebas[i][2])+' minas')
+        print(bcolors.WARNING+"Prueba " + str(i+1) + " de " + str(len(pruebas))+"."+bcolors.ENDC)
+        orig_stdout = sys.stdout
+        print(bcolors.OKBLUE+'Generando tablero: '+bcolors.ENDC+str(pruebas[i][0])+' x '+str(pruebas[i][1])+' con '+str(pruebas[i][2])+' minas')
         print('...')
-        print('Resolviendo tablero: '+str(pruebas[i][0])+' x '+str(pruebas[i][1])+' con '+str(pruebas[i][2])+' minas')
+        print(bcolors.OKBLUE+'Resolviendo tablero: '+bcolors.ENDC+str(pruebas[i][0])+' x '+str(pruebas[i][1])+' con '+str(pruebas[i][2])+' minas')
         f = open('Prueba_'+str(pruebas[i][0])+'x'+str(pruebas[i][1])+'_'+str(pruebas[i][2])+'_minas'+'.txt', 'w')
         sys.stdout = f
         start_time = time.time()
         status = aut.autosolver(pruebas[i][0],pruebas[i][1],pruebas[i][2])
         elapsed_time = time.time() - start_time
-        print("Tiempo transcurrido:")
+        print(bcolors.OKBLUE+" Tiempo transcurrido: "+bcolors.ENDC)
         print(str(datetime.timedelta(seconds=elapsed_time)))
         sys.stdout = orig_stdout
         f.close()
@@ -39,16 +43,14 @@ for i in range(0,len(pruebas)):
         if status == 0:
             success = False
             print()
-            print("Partida perdida, reintentando")
-            print("Tiempo transcurrido:")
+            print(bcolors.FAIL+" Partida perdida, reintentando "+bcolors.ENDC)
+            print(bcolors.OKBLUE+" Tiempo transcurrido: "+bcolors.ENDC)
             print(str(datetime.timedelta(seconds=elapsed_time)))
             print("-----------------------------------------------------------------------------------------------------")
-            print()
         else:
             success = True
             print()
-            print("Partida ganada")
-            print("Tiempo transcurrido:")
+            print(bcolors.OKGREEN+" ! Partida ganada ! "+bcolors.ENDC)
+            print(bcolors.OKBLUE+" Tiempo transcurrido: "+bcolors.ENDC)
             print(str(datetime.timedelta(seconds=elapsed_time)))
             print("-----------------------------------------------------------------------------------------------------")
-            print()
