@@ -4,8 +4,8 @@ import autosolver as aut
 import time
 import datetime
 from functools import wraps
-pruebas = ([5,5,5],[5,5,6],[5,5,7],[8,8,13],[8,8,14],[8,8,15],[10,10,23],[10,10,24],[10,10,25])
-
+#pruebas = ([5,5,5],[5,5,6],[5,5,7],[8,8,13],[8,8,14],[8,8,15],[10,10,23],[10,10,24],[10,10,25])
+pruebas = ([10,10,23],[10,10,24],[10,10,25])
 
 for i in range(0,len(pruebas)-1):
     success = False
@@ -17,7 +17,7 @@ for i in range(0,len(pruebas)-1):
         start_time = time.time()
         status = aut.autosolver(pruebas[i][0],pruebas[i][1],pruebas[i][2])
         elapsed_time = time.time() - start_time
-        print("Tiempo transcurrido")
+        print("Tiempo trascurrido")
         print(str(datetime.timedelta(seconds=elapsed_time)))
         sys.stdout = orig_stdout
         f.close()
