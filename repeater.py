@@ -7,7 +7,7 @@ from functools import wraps
 #pruebas = ([5,5,5],[5,5,6],[5,5,7],[8,8,13],[8,8,14],[8,8,15],[10,10,23],[10,10,24],[10,10,25])
 pruebas = ([10,10,23],[10,10,24],[10,10,25])
 
-for i in range(0,len(pruebas)-1):
+for i in range(0,len(pruebas)):
     success = False
     while not success:
         orig_stdout = sys.stdout
