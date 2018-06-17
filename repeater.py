@@ -17,33 +17,15 @@ Parámetros
 pruebas: list, array-like
     casos de prueba a realizar
 """
-
-done = 'false'
-#here is the animation
-def animate():
-    while done == 'false':
-        sys.stdout.write('\rCalculando |')
-        time.sleep(0.1)
-        sys.stdout.write('\rCalculando /')
-        time.sleep(0.1)
-        sys.stdout.write('\rCalculando -')
-        time.sleep(0.1)
-        sys.stdout.write('\rCalculando \\')
-        time.sleep(0.1)
-    sys.stdout.write('\r!Hecho!     ')
-
-
-for i in range(0,len(pruebas)-1):
+pruebas = ([5,5,5],[5,5,6],[5,5,7],[8,8,13],[8,8,14],[8,8,15],[10,10,23],[10,10,24],[10,10,25])
+for i in range(0,len(pruebas)):
     success = False
-    
-    
-
     while not success:
         orig_stdout = sys.stdout
+        print()
         print('Generando tablero: '+str(pruebas[i][0])+' x '+str(pruebas[i][1])+' con '+str(pruebas[i][2])+' minas')
         print('...')
         print('Resolviendo tablero: '+str(pruebas[i][0])+' x '+str(pruebas[i][1])+' con '+str(pruebas[i][2])+' minas')
-        animate()
         f = open('Prueba_'+str(pruebas[i][0])+'x'+str(pruebas[i][1])+'_'+str(pruebas[i][2])+'_minas'+'.txt', 'w')
         sys.stdout = f
         start_time = time.time()
@@ -53,16 +35,18 @@ for i in range(0,len(pruebas)-1):
         print(str(datetime.timedelta(seconds=elapsed_time)))
         sys.stdout = orig_stdout
         f.close()
+        
         if status == 0:
             success = False
-            done = False
-            print("Juego perdido, reintentando.")
-            print("Tiempo invertido:")
-            print(str(datetime.timedelta(seconds=elapsed_time)))
-        else:
-            success = True
-            done = True
-            print("¡Juego resuelto!")
+            print("Partida perdida, reintentando")
             print("Tiempo transcurrido:")
             print(str(datetime.timedelta(seconds=elapsed_time)))
-    
+            print("-----------------------------------------------------------------------------------------------------")
+            print()
+        else:
+            success = True
+            print("Partida ganada")
+            print("Tiempo transcurrido:")
+            print(str(datetime.timedelta(seconds=elapsed_time)))
+            print("-----------------------------------------------------------------------------------------------------")
+            print()
