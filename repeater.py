@@ -44,7 +44,7 @@ for i in range(0,len(pruebas)-1):
         if status == 0:
             success = False
             print()
-            print(bcolors.FAIL+" Partida perdida, reintentando "+bcolors.ENDC)
+            print(bcolors.FAIL+" Partida perdida, reintentando... "+bcolors.ENDC)
             print()
             print(bcolors.OKBLUE+" Tiempo empleado: "+bcolors.ENDC)
             print(str(datetime.timedelta(seconds=elapsed_time)))
