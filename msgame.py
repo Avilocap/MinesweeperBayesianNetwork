@@ -270,10 +270,6 @@ class MSGame(object):
         x = self.name_nodes()
         esEsquinaYCual = self.es_esquina(i,j)
         esLateralYCual = self.es_lateral(i,j)
-        # neightbours_of_position.append("Posición actual: "+ curr_pos + " " + str(g))
-        # print(" ")
-        # print(esEsquinaYCual)
-        # print(esLateralYCual)
 
         if not esEsquinaYCual[0] and not esLateralYCual[0]:
             neight_hori_izq = x[g-1] 
@@ -451,44 +447,3 @@ class MSGame(object):
         elif self.board.mine_map[0,self.board.board_height-1] == 0:
             self.board.mine_map[posx,posi] = 0
             self.board.mine_map[0,self.board.board_height-1] = 1
-        
-    # def tcp_accept(self):
-    #     """Waiting for a TCP connection."""
-    #     self.conn, self.addr = self.tcp_socket.accept()
-    #     print("[MESSAGE] The connection is established at: ", self.addr)
-    #     self.tcp_send("> ")
-
-    # def tcp_receive(self):
-    #     """Receive data from TCP port."""
-    #     data = self.conn.recv(self.BUFFER_SIZE)
-
-    #     if type(data) != str:
-    #         # Python 3 specific
-    #         data = data.decode("utf-8")
-
-    #     return str(data)
-
-    # def tcp_send(self, data):
-    #     """Send data from TCP port."""
-    #     self.conn.send(data)
-
-    # def tcp_close(self):
-    #     """Close Connection."""
-    #     self.conn.close()
-    #     self.tcp_accept()
-
-    # def tcp_help(self):
-    #     """Help message for TCP interface."""
-    #     help_msg = "Welcome to Mine Sweeper! \n" + \
-    #                "You have 5 types of moves to use: \n" + \
-    #                "(1) Click\t: click: X, Y \n" + \
-    #                "(2) Flag\t: flag: X, Y \n" + \
-    #                "(3) Question\t: question: X, Y\n" + \
-    #                "(4) Unflag\t: unflag: X, Y\n" + \
-    #                "(5) Print board: print\n"
-
-    #     self.tcp_send(help_msg)
-
-    
-
-        

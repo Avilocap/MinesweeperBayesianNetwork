@@ -11,7 +11,7 @@ import pgmpy.inference.EliminationOrder as elor
 
 
 tamaño = input("Introduce el valor M que generará el tablero de tamaño MxM: ")
-bombasInput = input("Introduce el número de bombas: ")
+bombasInput = input("Introduce el número de minas: ")
 game = MSGame(int(tamaño), int(tamaño), int(bombasInput))
 modelo = gameNetworkGenerator(game)
 
@@ -34,6 +34,10 @@ casillasMarcadas = []
 reverse = False
 
 while game.game_status == 2:
+    """
+    Mientras queden casillas por descubrir, recorrermos el tablero y obtenemos las casillas ya descubiertas y sus valores asociados, 
+    y además añadimos a una lista las casillas por marcar como mina o bandera.
+    """
     no_bombas_enYij={} 
     no_bombas_enXij={} 
     evidencias= {}
@@ -88,7 +92,11 @@ while game.game_status == 2:
     else:
         reverse =  False
 
-    # Se descartan los nodos irrelevantes
+        """
+         Se descartan los nodos irrelevantes, nos quedamos el valor X de la casilla a iterar y con los valores X e Y de
+         las evidencias descubiertas.
+
+        """
     for u in casillasParaIterarSet:
         if u in casillasMarcadas:
             casillasParaIterarSet.remove(u)
@@ -132,24 +140,29 @@ while game.game_status == 2:
         modeloCopia.remove_nodes_from(nodosDescartados)
         Model_Game_ev = pgmi.VariableElimination(modeloCopia)
         consulta = Model_Game_ev.query([casillasParaIterarSet[p]], evidencias)
-        print("[P. !BOMBA - P. BOMBA]")
+        print("[P. !MINA - P. MINA]")
         print(consulta[casillasParaIterarSet[p]].values)
         valores = consulta[casillasParaIterarSet[p]].values
         listaDeProbsFinales.append(valores)
 
-        
+        """
+        Si tenemos seguridad de que hay una mina, la marcamos con una bandera directamente y son calculos que no tendremos
+        que repetir a posteriori.
+        """
         
         if valores[1] >= 0.790:   
                 game.play_move("flag",int(kee),int(lee))
                 casillasMarcadas.append("X"+str(kee)+str(lee))
                 print()
-                print("¡¡ Encontrada bomba !!")
+                print("¡¡ Encontrada mina !!")
                 print()
                 game.print_board()
                 # if game.game_status == 1:
                     # sys.exit()
                 continue
-
+        """
+        Si tenemos certeza de que en esa casilla no hay mina, hacemos click directamente para poder continuar con otra iteración del juego
+        """
         if valores[0] >= 0.90:
             valorReal = 1 - valores[0]
             print("Se ha descubierto que la casilla " + casillasParaIterarSet[p] + " tiene una posibilidad: " + str(valorReal)+" de contener una mina")
@@ -171,9 +184,10 @@ while game.game_status == 2:
         listasCeros = [item[0] for item in listaDeProbsFinales]
         con_bombas = [item[1] for item in listaDeProbsFinales]
         elementos = []
+        """
+        Si durante la iteración no hemos podido marcar con seguridad alguna casilla como mina, la marcamos ahora.
+        """  
         for h in range(len(con_bombas)):
-            #Aquí estamos viendo si un número enorme en coma flotante es idéntico a 1, llega un punto al final del algoritmo, en el que en las últimas iteraciones la probabilidad de bomba para 
-            #para una casilla no se acerca a 1.0 y no podemos marcarla bien con flag para ganar el juego.
             if con_bombas[h] >= .800:
                 elemento = casillasParaIterarSet[h]
                 ke = elemento[1:2]
@@ -181,7 +195,7 @@ while game.game_status == 2:
                 game.play_move("flag",int(ke),int(le))
                 casillasMarcadas.append("X"+str(ke)+str(le))
                 print()
-                print("¡¡ Encontrada bomba !!")
+                print("¡¡ Encontrada mina !!")
                 print()
                 game.print_board()
                 print("Casillas marcadas")
@@ -192,6 +206,11 @@ while game.game_status == 2:
             game.print_board()
             # sys.exit()
         else:
+            """
+                Si durante la iteración de las casillas por descubir, no hemos podido hacer click con mucha certeza sobre una casilla, 
+                elegiremos la que menos probabilidad de contener mina tenga de entre todas las calculadas, y será ésta la casilla elegida para
+                hacer el próximo click.
+            """
             maximo = numpy.amax(listasCeros)
             winner = casillasParaIterarSet[listasCeros.index(maximo)]
             print(winner)

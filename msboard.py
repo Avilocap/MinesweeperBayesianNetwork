@@ -194,8 +194,3 @@ class MSBoard(object):
             board_str += temp_line.expandtabs(4)+"\n"
 
         return board_str
-
-    # def get_nodes(self):
-    #     list_nodes = list(np.array(self.info_map))
-
-    #     return list_nodes

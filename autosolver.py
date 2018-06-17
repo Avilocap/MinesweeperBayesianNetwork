@@ -12,7 +12,7 @@ def autosolver(anchura, altura, numMinas):
     game = MSGame(anchura, altura, numMinas)
     modelo = gameNetworkGenerator(game)
 
-
+    #Hacemos un click aleatorio en el tablero para comenzar a obtener valores de eviencias de las casillas.
     print("")
     print("△ Tablero ------------------------------------------------------")
     print("")
@@ -32,6 +32,10 @@ def autosolver(anchura, altura, numMinas):
 
 
     while game.game_status == 2:
+        """
+        Mientras queden casillas por descubrir, recorrermos el tablero y obtenemos las casillas ya descubiertas y sus valores asociados, 
+        y además añadimos a una lista las casillas por marcar como mina o bandera.
+        """
         evidencias= {}
         sindescubrir = []
         con_bombas = []
@@ -81,7 +85,11 @@ def autosolver(anchura, altura, numMinas):
         else:
             reverse =  False
         
-        # Se descartan los nodos irrelevantes
+        """
+         Se descartan los nodos irrelevantes, nos quedamos el valor X de la casilla a iterar y con los valores X e Y de
+         las evidencias descubiertas.
+
+        """
         for u in casillasParaIterarSet:
             if u in casillasMarcadas:
                 casillasParaIterarSet.remove(u)
@@ -123,16 +131,19 @@ def autosolver(anchura, altura, numMinas):
             modeloCopia.remove_nodes_from(nodosDescartados)
             Model_Game_ev = pgmi.VariableElimination(modeloCopia)
             consulta = Model_Game_ev.query([casillasParaIterarSet[p]], evidencias)
-            print("[P. !BOMBA - P. BOMBA]")
+            print("[P. !MINA - P. MINA]")
             print(consulta[casillasParaIterarSet[p]].values)
             valores = consulta[casillasParaIterarSet[p]].values
             listaDeProbsFinales.append(valores)
-
+            """
+            Si tenemos seguridad de que hay una mina, la marcamos con una bandera directamente y son calculos que no tendremos
+            que repetir a posteriori.
+            """
             if valores[1] >= 0.790:
                     game.play_move("flag",int(kee),int(lee))
                     casillasMarcadas.append("X"+str(kee)+str(lee))
                     print()
-                    print("¡¡ Encontrada bomba !!")
+                    print("¡¡ Encontrada mina !!")
                     print()
                     game.print_board()
                     # if game.game_status == 1:
@@ -140,6 +151,9 @@ def autosolver(anchura, altura, numMinas):
                     continue
 
             if valores[0] >= 0.90:
+                """
+                Si tenemos certeza de que en esa casilla no hay mina, hacemos click directamente para poder continuar con otra iteración del juego
+                """
                 valorReal = 1 - valores[0]
                 print("Se ha descubierto que la casilla " + casillasParaIterarSet[p] + " es la que menos posibilidades tiene de contener una mina, en concreto: " + str(valorReal))
                 print("Click en: "+str(kee)+","+str(lee))
@@ -158,8 +172,9 @@ def autosolver(anchura, altura, numMinas):
             listasCeros = [item[0] for item in listaDeProbsFinales]
             con_bombas = [item[1] for item in listaDeProbsFinales]
             for h in range(len(con_bombas)):
-                #Aquí estamos viendo si un número enorme en coma flotante es idéntico a 1, llega un punto al final del algoritmo, en el que en las últimas iteraciones la probabilidad de bomba para 
-                #para una casilla no se acerca a 1.0 y no podemos marcarla bien con flag para ganar el juego.
+                """
+                 Si durante la iteración no hemos podido marcar con seguridad alguna casilla como mina, la marcamos ahora.
+                """                
                 if con_bombas[h] >= .800:
                     elemento = casillasParaIterarSet[h]
                     ke = elemento[1:2]
@@ -167,19 +182,22 @@ def autosolver(anchura, altura, numMinas):
                     game.play_move("flag",int(ke),int(le))
                     casillasMarcadas.append("X"+str(ke)+str(le))
                     print()
-                    print("¡¡ Encontrada bomba !!")
+                    print("¡¡ Encontrada mina !!")
                     print()
                     game.print_board()
                     print("Casillas marcadas")
                     print(casillasMarcadas)
-                    
-                
-                # print(board.info_map)
+    
             if game.game_status == 1:
                 print("")
                 game.print_board()
                 # sys.exit()
             else:
+                """
+                Si durante la iteración de las casillas por descubir, no hemos podido hacer click con mucha certeza sobre una casilla, 
+                elegiremos la que menos probabilidad de contener mina tenga de entre todas las calculadas, y será ésta la casilla elegida para
+                hacer el próximo click.
+                """
                 maximo = numpy.amax(listasCeros)
                 winner = casillasParaIterarSet[listasCeros.index(maximo)]
                 print(winner)
