@@ -25,7 +25,8 @@ for i in range(0,len(pruebas)):
     success = False
     while not success:
         print()
-        print(bcolors.WARNING+"Prueba " + str(i+1) + " de " + str(len(pruebas))+"."+bcolors.ENDC)
+        print(bcolors.WARNING+"Test " + str(i+1) + " de " + str(len(pruebas))+"."+bcolors.ENDC)
+        print()
         orig_stdout = sys.stdout
         print(bcolors.OKBLUE+'Generando tablero: '+bcolors.ENDC+str(pruebas[i][0])+' x '+str(pruebas[i][1])+' con '+str(pruebas[i][2])+' minas')
         print('...')
@@ -44,13 +45,15 @@ for i in range(0,len(pruebas)):
             success = False
             print()
             print(bcolors.FAIL+" Partida perdida, reintentando "+bcolors.ENDC)
-            print(bcolors.OKBLUE+" Tiempo transcurrido: "+bcolors.ENDC)
+            print()
+            print(bcolors.OKBLUE+" Tiempo empleado: "+bcolors.ENDC)
             print(str(datetime.timedelta(seconds=elapsed_time)))
             print("-----------------------------------------------------------------------------------------------------")
         else:
             success = True
             print()
             print(bcolors.OKGREEN+" ! Partida ganada ! "+bcolors.ENDC)
-            print(bcolors.OKBLUE+" Tiempo transcurrido: "+bcolors.ENDC)
+            print()
+            print(bcolors.OKBLUE+" Tiempo empleado: "+bcolors.ENDC)
             print(str(datetime.timedelta(seconds=elapsed_time)))
             print("-----------------------------------------------------------------------------------------------------")
