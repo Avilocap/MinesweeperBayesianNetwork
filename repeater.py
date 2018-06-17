@@ -21,7 +21,7 @@ pruebas: list, array-like
     casos de prueba a realizar
 """
 pruebas = ([5,5,5],[5,5,6],[5,5,7],[8,8,13],[8,8,14],[8,8,15],[10,10,23],[10,10,24],[10,10,25])
-for i in range(0,len(pruebas)):
+for i in range(0,len(pruebas)-1):
     success = False
     while not success:
         print()
