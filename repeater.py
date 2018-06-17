@@ -36,8 +36,8 @@ for i in range(0,len(pruebas)-1):
         start_time = time.time()
         status = aut.autosolver(pruebas[i][0],pruebas[i][1],pruebas[i][2])
         elapsed_time = time.time() - start_time
-        print(bcolors.OKBLUE+" Tiempo transcurrido: "+bcolors.ENDC)
-        print(str(datetime.timedelta(seconds=elapsed_time)))
+        print(bcolors.OKBLUE+"Tiempo empleado: "+bcolors.ENDC+str(datetime.timedelta(seconds=elapsed_time)))
+        print()
         sys.stdout = orig_stdout
         f.close()
         
@@ -46,14 +46,14 @@ for i in range(0,len(pruebas)-1):
             print()
             print(bcolors.FAIL+" Partida perdida, reintentando... "+bcolors.ENDC)
             print()
-            print(bcolors.OKBLUE+" Tiempo empleado: "+bcolors.ENDC)
-            print(str(datetime.timedelta(seconds=elapsed_time)))
+            print(bcolors.OKBLUE+"Tiempo empleado: "+bcolors.ENDC+str(datetime.timedelta(seconds=elapsed_time)))
+            print()
             print("-----------------------------------------------------------------------------------------------------")
         else:
             success = True
             print()
             print(bcolors.OKGREEN+" ! Partida ganada ! "+bcolors.ENDC)
             print()
-            print(bcolors.OKBLUE+" Tiempo empleado: "+bcolors.ENDC)
-            print(str(datetime.timedelta(seconds=elapsed_time)))
+            print(bcolors.OKBLUE+"Tiempo empleado: "+bcolors.ENDC+str(datetime.timedelta(seconds=elapsed_time)))
+            print()
             print("-----------------------------------------------------------------------------------------------------")
