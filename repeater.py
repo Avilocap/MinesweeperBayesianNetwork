@@ -9,7 +9,7 @@ from msboard import bcolors
 
 
 
-pruebas = ([5,5,5],[5,5,6],[5,5,7],[8,8,13],[8,8,14],[8,8,15],[10,10,23],[10,10,24],[10,10,25])
+pruebas = ([5,5,5],[5,5,6],[5,5,7],[8,8,13],[8,8,14],[8,8,15],[10,10,23],[10,10,24],[10,10,25],[5,5,5])
 
 """
 Recorre el array de pruebas dado [tam,tam,numBombas], crea el juego y la red bayesiana para resolverlo automáticamente,
@@ -25,7 +25,7 @@ for i in range(0,len(pruebas)-1):
     success = False
     while not success:
         print()
-        print(bcolors.WARNING+"Test " + str(i+1) + " de " + str(len(pruebas))+"."+bcolors.ENDC)
+        print(bcolors.WARNING+"Test " + str(i+1) + " de " + str(len(pruebas)-1)+"."+bcolors.ENDC)
         print()
         orig_stdout = sys.stdout
         print(bcolors.OKBLUE+'Generando tablero: '+bcolors.ENDC+str(pruebas[i][0])+' x '+str(pruebas[i][1])+' con '+str(pruebas[i][2])+' minas')
