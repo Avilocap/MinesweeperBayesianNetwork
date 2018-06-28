@@ -30,3 +30,11 @@ El código se compone de dos partes fundamentales.
 Las pruebas realizadas en el apartado Pruebas de Rendimiento han sido realizando ejecutando con Python 3 el fichero repeater.py ya que dicho fichero contiene todas las pruebas requeridas por los requisitos, estas pruebas han sido realizadas completamente un total de 3 veces.
 
 Sin embargo, si se desea realizar una prueba en concreto, bastaría con editar el tamaño del tablero y el número de minas de la línea 13 del fichero individualAutosolver.py y ejecutarlo con python3. El terminal mostrará entonces la ejecución del programa.
+
+! El tablero debe ser una matriz cuadrada de tamaño mxm ! 
+
+ * SON NECESARIOS LOS SIGUENTES PAQUETES: 
+		- pgmpy
+		- numpy
+		- networkx
+		- pandas
