@@ -8,8 +8,8 @@ from itertools import cycle
 from msboard import bcolors
 
 
-
-pruebas = ([5,5,5],[5,5,6],[5,5,7],[8,8,13],[8,8,14],[8,8,15],[10,10,23],[10,10,24],[10,10,25],[5,5,5])
+#Casos de prueba a ejecutar
+pruebas = ([5,5,5],[5,5,6],[5,5,7],[8,8,13],[8,8,14],[8,8,15],[10,10,23],[10,10,24],[10,10,25],[1,1,1])
 
 """
 Recorre el array de pruebas dado [tam,tam,numBombas], crea el juego y la red bayesiana para resolverlo automáticamente,

@@ -265,6 +265,9 @@ class MSGame(object):
 
 
     def neightbours_of_position(self,i,j):
+        """
+        Ayuda a encontrar los vecinos (casillas adyacentes) de una casilla dada
+        """
         neightbours_of_position = []
         g = (j+1) + ((i+1) - 1) * self.board.board_width -1
         x = self.name_nodes()
@@ -421,7 +424,10 @@ class MSGame(object):
         self.play_move(move_type, move_x, move_y)
 
     def mover_minas_alrededor(self,posi,posj):
-        
+        """
+        Método que nos ayuda a tener un gran número de evidencias después del primer click al despejar la zona clickada 
+        intentando maximizar el número de casillas libres.
+        """
         if self.board.mine_map[posj,posi] == 1:
            self.mover_mina_a_esquina(posj,posi)
 
@@ -434,6 +440,9 @@ class MSGame(object):
 
 
     def mover_mina_a_esquina(self,posx,posi):
+        """
+        Método auxiliar de mover_minas_alrededor, para intentar recolocar estas minas en esquinas vacías.
+        """
 
         if self.board.mine_map[self.board.board_width-1,self.board.board_height-1] == 0:
             self.board.mine_map[posx,posi] = 0
